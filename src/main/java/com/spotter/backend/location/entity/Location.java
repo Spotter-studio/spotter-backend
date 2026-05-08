@@ -58,4 +58,13 @@ public class Location {
 	@UpdateTimestamp
 	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
+
+	public Location(String naverPlaceId, String name, String address, BigDecimal latitude, BigDecimal longitude, Category category) {
+		this.naverPlaceId = naverPlaceId;
+		this.name = name;
+		this.address = address;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.category = category;
+	}
 }
