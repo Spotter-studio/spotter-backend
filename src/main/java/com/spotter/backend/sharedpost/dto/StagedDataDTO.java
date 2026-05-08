@@ -1,4 +1,4 @@
-package com.spotter.backend.stageddata.dto;
+package com.spotter.backend.sharedpost.dto;
 
 import com.spotter.backend.common.enums.SourceType;
 import jakarta.validation.constraints.Size;

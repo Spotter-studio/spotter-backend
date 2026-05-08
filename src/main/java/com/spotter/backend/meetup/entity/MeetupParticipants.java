@@ -1,6 +1,6 @@
 package com.spotter.backend.meetup.entity;
 
-import com.spotter.backend.common.entity.BaseEntity;
+import com.spotter.backend.common.entity.BaseTimeEntity;
 import com.spotter.backend.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +15,7 @@ import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -25,7 +26,7 @@ import java.time.LocalDateTime;
 )
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MeetupParticipants extends BaseEntity {
+public class MeetupParticipants extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,7 +1,7 @@
 package com.spotter.backend.meetup.entity;
 
 import com.spotter.backend.common.converter.InvitationStatusConverter;
-import com.spotter.backend.common.entity.BaseEntity;
+import com.spotter.backend.common.entity.BaseTimeEntity;
 import com.spotter.backend.common.enums.InvitationStatus;
 import com.spotter.backend.user.entity.User;
 import jakarta.persistence.Column;
@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
 )
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MeetupInvitations extends BaseEntity {
+public class MeetupInvitations extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

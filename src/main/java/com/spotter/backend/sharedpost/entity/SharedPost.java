@@ -1,7 +1,7 @@
-package com.spotter.backend.stageddata.entity;
+package com.spotter.backend.sharedpost.entity;
 
 import com.spotter.backend.common.converter.SourceTypeConverter;
-import com.spotter.backend.common.entity.BaseEntity;
+import com.spotter.backend.common.entity.BaseTimeEntity;
 import com.spotter.backend.common.enums.SourceType;
 import com.spotter.backend.user.entity.User;
 import jakarta.persistence.Column;
@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "staged_data")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class StagedData extends BaseEntity {
+public class SharedPost extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

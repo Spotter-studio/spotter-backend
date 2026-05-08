@@ -1,7 +1,7 @@
 package com.spotter.backend.scrap.entity;
 
 import com.spotter.backend.common.converter.SourceTypeConverter;
-import com.spotter.backend.common.entity.BaseEntity;
+import com.spotter.backend.common.entity.BaseTimeEntity;
 import com.spotter.backend.common.enums.SourceType;
 import com.spotter.backend.location.entity.Location;
 import com.spotter.backend.user.entity.User;
@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 )
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Scrap extends BaseEntity {
+public class Scrap extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

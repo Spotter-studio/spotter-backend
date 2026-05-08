@@ -1,7 +1,7 @@
 package com.spotter.backend.friendship.entity;
 
 import com.spotter.backend.common.converter.FriendshipStatusConverter;
-import com.spotter.backend.common.entity.BaseEntity;
+import com.spotter.backend.common.entity.BaseTimeEntity;
 import com.spotter.backend.common.enums.FriendshipStatus;
 import com.spotter.backend.user.entity.User;
 import jakarta.persistence.Column;
@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
 )
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Friendship extends BaseEntity {
+public class Friendship extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

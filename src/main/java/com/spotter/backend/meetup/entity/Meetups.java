@@ -2,7 +2,7 @@ package com.spotter.backend.meetup.entity;
 
 import com.spotter.backend.common.converter.MeetupStatusConverter;
 import com.spotter.backend.common.converter.MeetupVisibilityConverter;
-import com.spotter.backend.common.entity.BaseEntity;
+import com.spotter.backend.common.entity.BaseTimeEntity;
 import com.spotter.backend.common.enums.MeetupStatus;
 import com.spotter.backend.common.enums.MeetupVisibility;
 import com.spotter.backend.location.entity.Location;
@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 @Table(name = "meetups")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Meetups extends BaseEntity {
+public class Meetups extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
