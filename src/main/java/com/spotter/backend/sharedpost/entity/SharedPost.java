@@ -3,6 +3,7 @@ package com.spotter.backend.sharedpost.entity;
 import com.spotter.backend.common.converter.SharedPostStatusConverter;
 import com.spotter.backend.common.converter.SourceTypeConverter;
 import com.spotter.backend.common.enums.SharedPostStatus;
+import com.spotter.backend.common.entity.BaseTimeEntity;
 import com.spotter.backend.common.enums.SourceType;
 import com.spotter.backend.location.entity.Location;
 import com.spotter.backend.user.entity.User;
@@ -33,7 +34,7 @@ import java.util.List;
 @Table(name = "shared_post")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SharedPost {
+public class SharedPost extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
