@@ -1,6 +1,7 @@
 package com.spotter.backend.stageddata.entity;
 
 import com.spotter.backend.common.converter.SourceTypeConverter;
+import com.spotter.backend.common.entity.BaseEntity;
 import com.spotter.backend.common.enums.SourceType;
 import com.spotter.backend.user.entity.User;
 import jakarta.persistence.Column;
@@ -16,15 +17,12 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "staged_data")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class StagedData {
+public class StagedData extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,7 +39,4 @@ public class StagedData {
 	@Column(name = "source_type", length = 20)
 	private SourceType sourceType = SourceType.INSTAGRAM;
 
-	@CreationTimestamp
-	@Column(name = "created_at", nullable = false, updatable = false)
-	private LocalDateTime createdAt;
 }

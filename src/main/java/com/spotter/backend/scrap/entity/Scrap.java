@@ -1,6 +1,7 @@
 package com.spotter.backend.scrap.entity;
 
 import com.spotter.backend.common.converter.SourceTypeConverter;
+import com.spotter.backend.common.entity.BaseEntity;
 import com.spotter.backend.common.enums.SourceType;
 import com.spotter.backend.location.entity.Location;
 import com.spotter.backend.user.entity.User;
@@ -18,9 +19,6 @@ import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(
@@ -29,7 +27,7 @@ import java.time.LocalDateTime;
 )
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Scrap {
+public class Scrap extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,7 +51,4 @@ public class Scrap {
 	@Column(name = "visit_count", nullable = false)
 	private Integer visitCount = 0;
 
-	@CreationTimestamp
-	@Column(name = "created_at", nullable = false, updatable = false)
-	private LocalDateTime createdAt;
 }

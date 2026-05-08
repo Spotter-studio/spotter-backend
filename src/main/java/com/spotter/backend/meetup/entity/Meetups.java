@@ -2,6 +2,7 @@ package com.spotter.backend.meetup.entity;
 
 import com.spotter.backend.common.converter.MeetupStatusConverter;
 import com.spotter.backend.common.converter.MeetupVisibilityConverter;
+import com.spotter.backend.common.entity.BaseEntity;
 import com.spotter.backend.common.enums.MeetupStatus;
 import com.spotter.backend.common.enums.MeetupVisibility;
 import com.spotter.backend.location.entity.Location;
@@ -19,7 +20,6 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 @Table(name = "meetups")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Meetups {
+public class Meetups extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,10 +56,6 @@ public class Meetups {
 	@Convert(converter = MeetupStatusConverter.class)
 	@Column(nullable = false)
 	private MeetupStatus status = MeetupStatus.RECRUITING;
-
-	@CreationTimestamp
-	@Column(name = "created_at", nullable = false, updatable = false)
-	private LocalDateTime createdAt;
 
 	@Convert(converter = MeetupVisibilityConverter.class)
 	@Column(nullable = false)

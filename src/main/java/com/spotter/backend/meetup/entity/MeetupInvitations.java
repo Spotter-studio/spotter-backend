@@ -1,6 +1,7 @@
 package com.spotter.backend.meetup.entity;
 
 import com.spotter.backend.common.converter.InvitationStatusConverter;
+import com.spotter.backend.common.entity.BaseEntity;
 import com.spotter.backend.common.enums.InvitationStatus;
 import com.spotter.backend.user.entity.User;
 import jakarta.persistence.Column;
@@ -17,7 +18,6 @@ import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
 )
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MeetupInvitations {
+public class MeetupInvitations extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,10 +49,6 @@ public class MeetupInvitations {
 	@Convert(converter = InvitationStatusConverter.class)
 	@Column(nullable = false)
 	private InvitationStatus status = InvitationStatus.PENDING;
-
-	@CreationTimestamp
-	@Column(name = "created_at", nullable = false, updatable = false)
-	private LocalDateTime createdAt;
 
 	@Column(name = "responded_at")
 	private LocalDateTime respondedAt;

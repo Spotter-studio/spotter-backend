@@ -1,6 +1,7 @@
 package com.spotter.backend.friendship.entity;
 
 import com.spotter.backend.common.converter.FriendshipStatusConverter;
+import com.spotter.backend.common.entity.BaseEntity;
 import com.spotter.backend.common.enums.FriendshipStatus;
 import com.spotter.backend.user.entity.User;
 import jakarta.persistence.Column;
@@ -17,7 +18,6 @@ import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
 )
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Friendship {
+public class Friendship extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,10 +45,6 @@ public class Friendship {
 	@Convert(converter = FriendshipStatusConverter.class)
 	@Column(nullable = false)
 	private FriendshipStatus status = FriendshipStatus.PENDING;
-
-	@CreationTimestamp
-	@Column(name = "created_at", nullable = false, updatable = false)
-	private LocalDateTime createdAt;
 
 	@Column(name = "accepted_at")
 	private LocalDateTime acceptedAt;
