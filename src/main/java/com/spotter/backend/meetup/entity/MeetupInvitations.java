@@ -50,6 +50,4 @@ public class MeetupInvitations extends BaseTimeEntity {
 	@Column(nullable = false)
 	private InvitationStatus status = InvitationStatus.PENDING;
 
-	@Column(name = "responded_at")
-	private LocalDateTime respondedAt;
 }

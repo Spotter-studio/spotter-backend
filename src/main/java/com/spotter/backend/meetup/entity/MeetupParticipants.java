@@ -40,7 +40,4 @@ public class MeetupParticipants extends BaseTimeEntity {
 	@JoinColumn(name = "meetup_id", nullable = false)
 	private Meetups meetup;
 
-	@CreationTimestamp
-	@Column(name = "joined_at", nullable = false, updatable = false)
-	private LocalDateTime joinedAt;
 }

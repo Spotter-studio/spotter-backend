@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface StagedDataRepository extends JpaRepository<SharedPost, Long> {
+public interface SharedPostRepository extends JpaRepository<SharedPost, Long> {
 
 	List<SharedPost> findByUser_Id(Long userId);
 }

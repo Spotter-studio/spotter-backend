@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
 )
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Friendship extends BaseTimeEntity {
+public class Friendship {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,7 +45,4 @@ public class Friendship extends BaseTimeEntity {
 	@Convert(converter = FriendshipStatusConverter.class)
 	@Column(nullable = false)
 	private FriendshipStatus status = FriendshipStatus.PENDING;
-
-	@Column(name = "accepted_at")
-	private LocalDateTime acceptedAt;
 }

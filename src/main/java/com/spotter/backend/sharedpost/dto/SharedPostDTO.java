@@ -5,9 +5,9 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 
-public final class StagedDataDTO {
+public final class SharedPostDTO {
 
-	private StagedDataDTO() {
+	private SharedPostDTO() {
 	}
 
 	public record CreateRequest(

@@ -19,7 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "staged_data")
+@Table(name = "shared_post")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SharedPost extends BaseTimeEntity {
