@@ -1,13 +1,13 @@
-package com.spotter.backend.stageddata.dto;
+package com.spotter.backend.sharedpost.dto;
 
 import com.spotter.backend.common.enums.SourceType;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 
-public final class StagedDataDTO {
+public final class SharedPostDTO {
 
-	private StagedDataDTO() {
+	private SharedPostDTO() {
 	}
 
 	public record CreateRequest(

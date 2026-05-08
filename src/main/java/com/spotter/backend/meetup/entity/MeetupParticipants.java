@@ -1,5 +1,6 @@
 package com.spotter.backend.meetup.entity;
 
+import com.spotter.backend.common.entity.BaseTimeEntity;
 import com.spotter.backend.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,7 +26,7 @@ import java.time.LocalDateTime;
 )
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MeetupParticipants {
+public class MeetupParticipants extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +40,4 @@ public class MeetupParticipants {
 	@JoinColumn(name = "meetup_id", nullable = false)
 	private Meetups meetup;
 
-	@CreationTimestamp
-	@Column(name = "joined_at", nullable = false, updatable = false)
-	private LocalDateTime joinedAt;
 }
