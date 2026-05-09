@@ -50,4 +50,22 @@ public class MeetupInvitations extends BaseTimeEntity {
 	@Column(nullable = false)
 	private InvitationStatus status = InvitationStatus.PENDING;
 
+	@Column(name = "responded_at")
+	private LocalDateTime respondedAt;
+
+	public MeetupInvitations(User invitedBy, User user, Meetups meetup) {
+		this.invitedBy = invitedBy;
+		this.user = user;
+		this.meetup = meetup;
+	}
+
+	public void accept() {
+		this.status = InvitationStatus.ACCEPTED;
+		this.respondedAt = LocalDateTime.now();
+	}
+
+	public void reject() {
+		this.status = InvitationStatus.REJECTED;
+		this.respondedAt = LocalDateTime.now();
+	}
 }

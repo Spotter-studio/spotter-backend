@@ -2,7 +2,6 @@ package com.spotter.backend.meetup.entity;
 
 import com.spotter.backend.common.entity.BaseTimeEntity;
 import com.spotter.backend.user.entity.User;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -15,9 +14,6 @@ import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(
@@ -40,4 +36,8 @@ public class MeetupParticipants extends BaseTimeEntity {
 	@JoinColumn(name = "meetup_id", nullable = false)
 	private Meetups meetup;
 
+	public MeetupParticipants(User user, Meetups meetup) {
+		this.user = user;
+		this.meetup = meetup;
+	}
 }
