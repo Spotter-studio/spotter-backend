@@ -36,24 +36,6 @@ public final class MeetupsDTO {
 	) {
 	}
 
-	public record UpdateRequest(
-		@Size(max = 200)
-		String title,
-
-		String description,
-
-		@Future
-		LocalDateTime meetupAt,
-
-		@Min(2)
-		Integer maxParticipants,
-
-		MeetupStatus status,
-
-		MeetupVisibility visibility
-	) {
-	}
-
 	public record Response(
 		Long id,
 		Long hostId,
@@ -62,9 +44,10 @@ public final class MeetupsDTO {
 		String description,
 		LocalDateTime meetupAt,
 		Integer maxParticipants,
+		Integer currentParticipants,
 		MeetupStatus status,
-		LocalDateTime createdAt,
-		MeetupVisibility visibility
+		MeetupVisibility visibility,
+		LocalDateTime createdAt
 	) {
 	}
 }
