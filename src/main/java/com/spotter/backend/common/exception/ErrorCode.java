@@ -26,8 +26,9 @@ public enum ErrorCode {
 
     // Friendship (친구, F-xxx)
     FRIENDSHIP_NOT_FOUND(HttpStatus.NOT_FOUND, "F001", "친구 관계를 찾을 수 없습니다."),
-    ALREADY_FRIEND(HttpStatus.CONFLICT, "F002", "이미 친구 관계입니다."),
+    ALREADY_FRIEND(HttpStatus.CONFLICT, "F002", "이미 친구 관계이거나 요청이 존재합니다."),
     NOT_FRIENDS(HttpStatus.BAD_REQUEST, "F003", "친구 관계가 아닙니다."),
+    SELF_FRIEND_REQUEST(HttpStatus.BAD_REQUEST, "F004", "자기 자신에게 친구 요청을 보낼 수 없습니다."),
 
     // Location (장소, L-xxx)
     LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "L001", "장소를 찾을 수 없습니다."),

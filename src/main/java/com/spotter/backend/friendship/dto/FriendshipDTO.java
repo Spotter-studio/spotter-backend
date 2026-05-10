@@ -31,4 +31,12 @@ public final class FriendshipDTO {
 		LocalDateTime acceptedAt
 	) {
 	}
+
+	public record FriendResponse(
+		Long friendshipId,
+		Long friendId,
+		String friendName,
+		LocalDateTime acceptedAt
+	) {
+	}
 }
