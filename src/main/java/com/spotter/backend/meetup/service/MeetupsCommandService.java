@@ -70,6 +70,11 @@ public class MeetupsCommandService {
 		User user = helper.findUser(email);
 		Meetups meetup = helper.findMeetup(meetupId);
 		helper.validateHost(user, meetup);
+
+		if (meetup.getStatus() != MeetupStatus.RECRUITING) {
+			throw new BusinessException(ErrorCode.MEETUP_NOT_RECRUITING);
+		}
+
 		meetup.cancel();
 	}
 
