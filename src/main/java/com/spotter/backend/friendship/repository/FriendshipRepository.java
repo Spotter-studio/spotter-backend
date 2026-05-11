@@ -21,4 +21,6 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 	List<Friendship> findAllByUser_IdAndStatus(Long userId, FriendshipStatus status);
 
 	List<Friendship> findAllByFriend_IdAndStatus(Long friendId, FriendshipStatus status);
+
+	void deleteByUser_IdOrFriend_Id(Long userId, Long friendId);
 }

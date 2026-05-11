@@ -8,4 +8,6 @@ import java.util.List;
 public interface SharedPostRepository extends JpaRepository<SharedPost, Long> {
 
 	List<SharedPost> findByUser_Id(Long userId);
+
+	void deleteByUser_Id(Long userId);
 }

@@ -13,4 +13,8 @@ public interface MeetupInvitationsRepository extends JpaRepository<MeetupInvitat
 	List<MeetupInvitations> findAllByUser_Id(Long userId);
 
 	Optional<MeetupInvitations> findByIdAndUser_Id(Long id, Long userId);
+
+	void deleteByInvitedBy_IdOrUser_Id(Long invitedById, Long userId);
+
+	void deleteByMeetup_IdIn(List<Long> meetupIds);
 }
