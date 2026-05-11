@@ -16,12 +16,6 @@ public final class MeetupInvitationsDTO {
 	) {
 	}
 
-	public record UpdateRequest(
-		@NotNull
-		InvitationStatus status
-	) {
-	}
-
 	public record Response(
 		Long id,
 		Long invitedBy,

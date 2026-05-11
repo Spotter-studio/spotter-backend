@@ -22,6 +22,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "meetups")
@@ -60,4 +61,19 @@ public class Meetups extends BaseTimeEntity {
 	@Convert(converter = MeetupVisibilityConverter.class)
 	@Column(nullable = false)
 	private MeetupVisibility visibility = MeetupVisibility.PUBLIC;
+
+	public Meetups(User host, Location location, String title, String description,
+		LocalDateTime meetupAt, Integer maxParticipants, MeetupVisibility visibility) {
+		this.host = host;
+		this.location = location;
+		this.title = title;
+		this.description = description;
+		this.meetupAt = meetupAt;
+		this.maxParticipants = Objects.requireNonNullElse(maxParticipants, 2);
+		this.visibility = Objects.requireNonNullElse(visibility, MeetupVisibility.PUBLIC);
+	}
+
+	public void cancel() {
+		this.status = MeetupStatus.CANCELLED;
+	}
 }

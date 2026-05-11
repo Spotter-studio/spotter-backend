@@ -27,9 +27,22 @@ public enum ErrorCode {
     // Friendship (친구, F-xxx)
     FRIENDSHIP_NOT_FOUND(HttpStatus.NOT_FOUND, "F001", "친구 관계를 찾을 수 없습니다."),
     ALREADY_FRIEND(HttpStatus.CONFLICT, "F002", "이미 친구 관계입니다."),
+    NOT_FRIENDS(HttpStatus.BAD_REQUEST, "F003", "친구 관계가 아닙니다."),
+
+    // Location (장소, L-xxx)
+    LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "L001", "장소를 찾을 수 없습니다."),
 
     // Meetup (밋업, M-xxx)
     MEETUP_NOT_FOUND(HttpStatus.NOT_FOUND, "M001", "밋업을 찾을 수 없습니다."),
+    MEETUP_ALREADY_JOINED(HttpStatus.CONFLICT, "M002", "이미 참가한 모임입니다."),
+    MEETUP_FULL(HttpStatus.CONFLICT, "M003", "모임 인원이 가득 찼습니다."),
+    MEETUP_NOT_RECRUITING(HttpStatus.BAD_REQUEST, "M004", "모집 중인 모임이 아닙니다."),
+    MEETUP_ACCESS_DENIED(HttpStatus.FORBIDDEN, "M005", "접근 권한이 없는 모임입니다."),
+    MEETUP_HOST_CANNOT_LEAVE(HttpStatus.BAD_REQUEST, "M006", "주최자는 모임을 나갈 수 없습니다. 취소를 이용해주세요."),
+    MEETUP_NOT_HOST(HttpStatus.FORBIDDEN, "M007", "모임 주최자만 수행할 수 있는 작업입니다."),
+    MEETUP_NOT_PARTICIPANT(HttpStatus.BAD_REQUEST, "M008", "참가하지 않은 모임입니다."),
+    INVITATION_NOT_FOUND(HttpStatus.NOT_FOUND, "M009", "초대를 찾을 수 없습니다."),
+    INVITATION_ALREADY_SENT(HttpStatus.CONFLICT, "M010", "이미 초대를 보낸 사용자입니다."),
 
     // Location (장소, L-xxx)
     LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "L001", "장소를 찾을 수 없습니다."),
