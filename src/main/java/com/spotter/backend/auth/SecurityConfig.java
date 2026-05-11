@@ -1,25 +1,72 @@
 package com.spotter.backend.auth;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spotter.backend.common.exception.ErrorCode;
+import com.spotter.backend.common.response.ApiResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		return http
-			.csrf(csrf -> csrf.disable())
-			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/api/health").permitAll()
-				.anyRequest().authenticated()
-			)
-			.build();
-	}
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final ObjectMapper objectMapper;
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http)
+        throws Exception {
+        return http
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .exceptionHandling(exception ->
+                exception.authenticationEntryPoint(
+                    (request, response, authException) -> {
+                        response.setStatus(
+                            ErrorCode.UNAUTHORIZED.getStatus().value()
+                        );
+                        response.setContentType(
+                            MediaType.APPLICATION_JSON_VALUE
+                        );
+                        objectMapper.writeValue(
+                            response.getWriter(),
+                            ApiResponse.onFailure(ErrorCode.UNAUTHORIZED)
+                        );
+                    }
+                )
+            )
+            .authorizeHttpRequests(auth ->
+                auth
+                    .requestMatchers(
+                        "/api/health",
+                        "/api/users/signup",
+                        "/api/users/login"
+                    )
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated()
+            )
+            .addFilterBefore(
+                jwtAuthenticationFilter,
+                UsernamePasswordAuthenticationFilter.class
+            )
+            .build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }
