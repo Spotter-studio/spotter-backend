@@ -2,6 +2,7 @@ package com.spotter.backend.sharedpost.dto;
 
 import com.spotter.backend.common.enums.SharedPostStatus;
 import com.spotter.backend.common.enums.SourceType;
+import com.spotter.backend.location.dto.LocationDTO;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -43,24 +44,13 @@ public final class SharedPostDTO {
 	) {
 	}
 
-	public record LocationSummary(
-		Long id,
-		String name,
-		String address,
-		BigDecimal latitude,
-		BigDecimal longitude,
-		Integer categoryId,
-		String categoryName
-	) {
-	}
-
 	public record Response(
 		Long id,
 		Long userId,
 		String sourceUrl,
 		SourceType sourceType,
 		SharedPostStatus status,
-		List<LocationSummary> locations,
+		List<LocationDTO.Response> locations,
 		LocalDateTime createdAt
 	) {
 	}

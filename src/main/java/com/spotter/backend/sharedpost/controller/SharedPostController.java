@@ -1,5 +1,6 @@
 package com.spotter.backend.sharedpost.controller;
 
+import com.spotter.backend.common.response.ApiResponse;
 import com.spotter.backend.sharedpost.dto.SharedPostDTO;
 import com.spotter.backend.sharedpost.service.SharedPostCommandService;
 import com.spotter.backend.sharedpost.service.SharedPostQueryService;
@@ -27,33 +28,33 @@ public class SharedPostController {
 	private final SharedPostCommandService sharedPostCommandService;
 
 	@PostMapping
-	public ResponseEntity<SharedPostDTO.Response> create(
+	public ResponseEntity<ApiResponse<SharedPostDTO.Response>> create(
 		Authentication authentication,
 		@Valid @RequestBody SharedPostDTO.CreateRequest request
 	) {
-		return ResponseEntity.ok(sharedPostCommandService.create(authentication.getName(), request));
+		return ResponseEntity.ok(ApiResponse.onSuccess(sharedPostCommandService.create(authentication.getName(), request)));
 	}
 
 	@GetMapping("/pending")
-	public ResponseEntity<List<SharedPostDTO.Response>> getPending(Authentication authentication) {
-		return ResponseEntity.ok(sharedPostQueryService.getPending(authentication.getName()));
+	public ResponseEntity<ApiResponse<List<SharedPostDTO.Response>>> getPending(Authentication authentication) {
+		return ResponseEntity.ok(ApiResponse.onSuccess(sharedPostQueryService.getPending(authentication.getName())));
 	}
 
 	@PostMapping("/{postId}/confirm")
-	public ResponseEntity<SharedPostDTO.Response> confirm(
+	public ResponseEntity<ApiResponse<SharedPostDTO.Response>> confirm(
 		Authentication authentication,
 		@PathVariable Long postId,
 		@Valid @RequestBody SharedPostDTO.ConfirmRequest request
 	) {
-		return ResponseEntity.ok(sharedPostCommandService.confirm(authentication.getName(), postId, request));
+		return ResponseEntity.ok(ApiResponse.onSuccess(sharedPostCommandService.confirm(authentication.getName(), postId, request)));
 	}
 
 	@DeleteMapping("/{postId}")
-	public ResponseEntity<Void> delete(
+	public ResponseEntity<ApiResponse<Void>> delete(
 		Authentication authentication,
 		@PathVariable Long postId
 	) {
 		sharedPostCommandService.delete(authentication.getName(), postId);
-		return ResponseEntity.noContent().build();
+		return ResponseEntity.ok(ApiResponse.onSuccess());
 	}
 }

@@ -56,5 +56,6 @@ public class Location extends BaseTimeEntity {
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.category = category;
+
 	}
 }

@@ -2,6 +2,8 @@ package com.spotter.backend.sharedpost.service;
 
 import com.spotter.backend.common.enums.SharedPostStatus;
 import com.spotter.backend.sharedpost.dto.SharedPostDTO;
+import com.spotter.backend.common.exception.BusinessException;
+import com.spotter.backend.common.exception.ErrorCode;
 import com.spotter.backend.sharedpost.repository.SharedPostRepository;
 import com.spotter.backend.user.entity.User;
 import com.spotter.backend.user.repository.UserRepository;
@@ -22,7 +24,7 @@ public class SharedPostQueryService {
 	// User 정보 가져오는 로직 구현 시 변경 예정
 	public List<SharedPostDTO.Response> getPending(String email) {
 		User user = userRepository.findByEmail(email)
-			.orElseThrow(() -> new IllegalArgumentException("User not found: " + email));
+			.orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
 		return sharedPostRepository.findByUser_IdAndStatus(user.getId(), SharedPostStatus.PENDING).stream()
 			.map(sp -> new SharedPostDTO.Response(
@@ -31,19 +33,11 @@ public class SharedPostQueryService {
 				sp.getSourceUrl(),
 				sp.getSourceType(),
 				sp.getStatus(),
-				sp.getLocations().stream()
-					.map(loc -> new SharedPostDTO.LocationSummary(
-						loc.getId(),
-						loc.getName(),
-						loc.getAddress(),
-						loc.getLatitude(),
-						loc.getLongitude(),
-						loc.getCategory().getId(),
-						loc.getCategory().getName()
-					))
-					.toList(),
+				List.of(),
 				sp.getCreatedAt()
 			))
 			.toList();
 	}
+
+
 }

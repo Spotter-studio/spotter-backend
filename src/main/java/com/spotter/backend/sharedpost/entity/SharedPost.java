@@ -2,10 +2,11 @@ package com.spotter.backend.sharedpost.entity;
 
 import com.spotter.backend.common.converter.SharedPostStatusConverter;
 import com.spotter.backend.common.converter.SourceTypeConverter;
-import com.spotter.backend.common.enums.SharedPostStatus;
 import com.spotter.backend.common.entity.BaseTimeEntity;
+import com.spotter.backend.common.enums.SharedPostStatus;
 import com.spotter.backend.common.enums.SourceType;
-import com.spotter.backend.location.entity.Location;
+import com.spotter.backend.common.exception.BusinessException;
+import com.spotter.backend.common.exception.ErrorCode;
 import com.spotter.backend.user.entity.User;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -17,8 +18,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -63,14 +62,6 @@ public class SharedPost extends BaseTimeEntity {
 	@Column(name = "image_url", length = 1000, nullable = false)
 	private List<String> imageUrls = new ArrayList<>();
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(
-		name = "shared_post_location",
-		joinColumns = @JoinColumn(name = "shared_post_id"),
-		inverseJoinColumns = @JoinColumn(name = "location_id")
-	)
-	private List<Location> locations = new ArrayList<>();
-
 	@CreationTimestamp
 	@Column(name = "created_at", nullable = false, updatable = false)
 	private LocalDateTime createdAt;
@@ -83,12 +74,18 @@ public class SharedPost extends BaseTimeEntity {
 		this.imageUrls = imageUrls != null ? imageUrls : new ArrayList<>();
 	}
 
-	public void confirm(List<Location> confirmedLocations) {
+    //서버에서 LLM과 네이버 지도 검색 api로 장소 정보 추출이 완료되었을 때-> SharedPost의 상태를 Raw-> PENDING으로 변환(사용자 검증 전)
+	public void toPending() {
+		if (this.status != SharedPostStatus.RAW) {
+			throw new BusinessException(ErrorCode.SHARED_POST_INVALID_STATUS);
+		}
+		this.status = SharedPostStatus.PENDING;
+	}
+
+	public void confirm() {
 		if (this.status != SharedPostStatus.PENDING) {
-			throw new IllegalStateException("SharedPost must be in PENDING status to confirm. Current status: " + this.status);
+			throw new BusinessException(ErrorCode.SHARED_POST_INVALID_STATUS);
 		}
 		this.status = SharedPostStatus.CONFIRMED;
-		this.locations.clear();
-		this.locations.addAll(confirmedLocations);
 	}
 }
