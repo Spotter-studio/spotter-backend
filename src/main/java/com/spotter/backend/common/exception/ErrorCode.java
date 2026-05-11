@@ -31,6 +31,7 @@ public enum ErrorCode {
 
     // Location (장소, L-xxx)
     LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "L001", "장소를 찾을 수 없습니다."),
+    LOCATION_INVALID_INPUT(HttpStatus.BAD_REQUEST, "L002", "신규 장소 등록에 필요한 정보가 부족합니다."),
 
     // Meetup (밋업, M-xxx)
     MEETUP_NOT_FOUND(HttpStatus.NOT_FOUND, "M001", "밋업을 찾을 수 없습니다."),
@@ -43,10 +44,6 @@ public enum ErrorCode {
     MEETUP_NOT_PARTICIPANT(HttpStatus.BAD_REQUEST, "M008", "참가하지 않은 모임입니다."),
     INVITATION_NOT_FOUND(HttpStatus.NOT_FOUND, "M009", "초대를 찾을 수 없습니다."),
     INVITATION_ALREADY_SENT(HttpStatus.CONFLICT, "M010", "이미 초대를 보낸 사용자입니다."),
-
-    // Location (장소, L-xxx)
-    LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "L001", "장소를 찾을 수 없습니다."),
-    LOCATION_INVALID_INPUT(HttpStatus.BAD_REQUEST, "L002", "신규 장소 등록에 필요한 정보가 부족합니다."),
 
     // Category (카테고리, C-xxx)
     CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "C001", "카테고리를 찾을 수 없습니다."),
