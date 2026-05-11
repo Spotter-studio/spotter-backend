@@ -57,6 +57,8 @@
 - [ ] JWT access token 발급 구현
 - [ ] JWT 인증 필터 구현
 - [ ] 현재 사용자 조회 API 구현: `GET /api/users/me`
+- [ ] 현재 사용자 수정 API 구현: `PATCH /api/users/me`
+- [ ] 현재 사용자 삭제 API 구현: `DELETE /api/users/me`
 - [ ] 인증 실패/권한 실패 응답 정리
 - [ ] Refresh Token 확장 포인트 문서화
 
