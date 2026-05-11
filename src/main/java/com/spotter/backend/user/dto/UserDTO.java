@@ -31,8 +31,31 @@ public final class UserDTO {
 		@Size(max = 50)
 		String name,
 
-		@Size(max = 2000)
-		String preferenceDoc
+		@Email
+		@Size(max = 100)
+		String email,
+
+		@Size(min = 8, max = 100)
+		String password
+	) {
+	}
+
+	public record LoginRequest(
+		@NotBlank
+		@Email
+		@Size(max = 100)
+		String email,
+
+		@NotBlank
+		@Size(min = 8, max = 100)
+		String password
+	) {
+	}
+
+	public record LoginResponse(
+		String accessToken,
+		String tokenType,
+		long expiresInSeconds
 	) {
 	}
 
