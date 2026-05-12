@@ -1,9 +1,14 @@
 package com.spotter.backend.sharedpost.dto;
 
+import com.spotter.backend.common.enums.SharedPostStatus;
 import com.spotter.backend.common.enums.SourceType;
+import com.spotter.backend.location.dto.LocationDTO;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public final class SharedPostDTO {
 
@@ -14,15 +19,26 @@ public final class SharedPostDTO {
 		@Size(max = 1000)
 		String sourceUrl,
 
-		SourceType sourceType
+		@NotNull
+		SourceType sourceType,
+
+		String ocrText
 	) {
 	}
 
-	public record UpdateRequest(
-		@Size(max = 1000)
-		String sourceUrl,
+	public record LocationInput(
+		Long id,
+		String naverPlaceId,
+		String name,
+		String address,
+		BigDecimal latitude,
+		BigDecimal longitude,
+		Integer categoryId
+	) {
+	}
 
-		SourceType sourceType
+	public record ConfirmRequest(
+		@NotNull List<LocationInput> locations
 	) {
 	}
 
@@ -31,6 +47,8 @@ public final class SharedPostDTO {
 		Long userId,
 		String sourceUrl,
 		SourceType sourceType,
+		SharedPostStatus status,
+		List<LocationDTO.Response> locations,
 		LocalDateTime createdAt
 	) {
 	}

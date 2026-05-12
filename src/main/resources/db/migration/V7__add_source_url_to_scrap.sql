@@ -1,2 +1,0 @@
-ALTER TABLE scrap
-    ADD COLUMN IF NOT EXISTS source_url VARCHAR(2048);

@@ -49,4 +49,13 @@ public class Location extends BaseTimeEntity {
 	@Column(name = "total_scrap_count", nullable = false)
 	private Integer totalScrapCount = 0;
 
+	public Location(String naverPlaceId, String name, String address, BigDecimal latitude, BigDecimal longitude, Category category) {
+		this.naverPlaceId = naverPlaceId;
+		this.name = name;
+		this.address = address;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.category = category;
+
+	}
 }
