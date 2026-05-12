@@ -1,6 +1,7 @@
 package com.spotter.backend.friendship.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spotter.backend.auth.JwtAuthenticationFilter;
 import com.spotter.backend.common.enums.FriendshipStatus;
 import com.spotter.backend.common.exception.BusinessException;
 import com.spotter.backend.common.exception.ErrorCode;
@@ -39,6 +40,9 @@ class FriendshipControllerTest {
 
 	@MockitoBean
 	private FriendshipService friendshipService;
+
+	@MockitoBean
+	private JwtAuthenticationFilter jwtAuthenticationFilter;
 
 	private static UsernamePasswordAuthenticationToken auth(Long userId) {
 		return new UsernamePasswordAuthenticationToken(userId, null, List.of());
