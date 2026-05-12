@@ -60,7 +60,6 @@ public class Friendship {
 		Friendship friendship = new Friendship();
 		friendship.user = user;
 		friendship.friend = friend;
-		friendship.status = FriendshipStatus.PENDING;
 		return friendship;
 	}
 

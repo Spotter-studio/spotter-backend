@@ -35,8 +35,7 @@ public class FriendshipService {
 			.orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
 		// 양방향 중복 체크
-		if (friendshipRepository.existsByUser_IdAndFriend_Id(userId, friendId)
-			|| friendshipRepository.existsByUser_IdAndFriend_Id(friendId, userId)) {
+		if (friendshipRepository.existsBetween(userId, friendId)) {
 			throw new BusinessException(ErrorCode.ALREADY_FRIEND);
 		}
 
@@ -91,10 +90,10 @@ public class FriendshipService {
 	// PENDING 상태인 요청만 수락/거절 가능
 	private Friendship findPendingRequest(Long requestId) {
 		Friendship friendship = friendshipRepository.findById(requestId)
-			.orElseThrow(() -> new BusinessException(ErrorCode.FRIENDSHIP_NOT_FOUND));
+			.orElseThrow(() -> new BusinessException(ErrorCode.FRIEND_REQUEST_NOT_FOUND));
 
 		if (friendship.getStatus() != FriendshipStatus.PENDING) {
-			throw new BusinessException(ErrorCode.BAD_REQUEST);
+			throw new BusinessException(ErrorCode.FRIEND_REQUEST_ALREADY_PROCESSED);
 		}
 
 		return friendship;

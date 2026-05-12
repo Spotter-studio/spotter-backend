@@ -16,12 +16,6 @@ public final class FriendshipDTO {
 	) {
 	}
 
-	public record UpdateRequest(
-		@NotNull
-		FriendshipStatus status
-	) {
-	}
-
 	public record Response(
 		Long id,
 		Long userId,

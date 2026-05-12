@@ -10,13 +10,16 @@ import java.util.List;
 
 public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
-	boolean existsByUser_IdAndFriend_Id(Long userId, Long friendId);
-
-	// 양방향 친구 관계 확인
+	// 양방향 친구 관계 확인 (status 포함) — Meetup 서비스에서 ACCEPTED 여부 확인 용도
 	@Query("SELECT CASE WHEN COUNT(f) > 0 THEN TRUE ELSE FALSE END FROM Friendship f WHERE " +
 		"((f.user.id = :userId AND f.friend.id = :otherId) OR (f.user.id = :otherId AND f.friend.id = :userId)) " +
 		"AND f.status = :status")
 	boolean existsBidirectional(@Param("userId") Long userId, @Param("otherId") Long otherId, @Param("status") FriendshipStatus status);
+
+	// 양방향 친구 관계 확인 (status 무관) — 친구 요청 중복 체크 용도
+	@Query("SELECT CASE WHEN COUNT(f) > 0 THEN TRUE ELSE FALSE END FROM Friendship f WHERE " +
+		"(f.user.id = :userId AND f.friend.id = :otherId) OR (f.user.id = :otherId AND f.friend.id = :userId)")
+	boolean existsBetween(@Param("userId") Long userId, @Param("otherId") Long otherId);
 
 	List<Friendship> findAllByUser_IdAndStatus(Long userId, FriendshipStatus status);
 

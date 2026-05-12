@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -38,6 +40,10 @@ class FriendshipControllerTest {
 	@MockitoBean
 	private FriendshipService friendshipService;
 
+	private static UsernamePasswordAuthenticationToken auth(Long userId) {
+		return new UsernamePasswordAuthenticationToken(userId, null, List.of());
+	}
+
 	private FriendshipDTO.Response pendingResponse() {
 		return new FriendshipDTO.Response(1L, 1L, 2L, FriendshipStatus.PENDING, LocalDateTime.now(), null);
 	}
@@ -52,7 +58,7 @@ class FriendshipControllerTest {
 			when(friendshipService.sendRequest(1L, 2L)).thenReturn(pendingResponse());
 
 			mockMvc.perform(post("/api/friends/requests")
-					.header("X-User-Id", 1L)
+					.with(authentication(auth(1L)))
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(objectMapper.writeValueAsString(Map.of("friendId", 2))))
 				.andExpect(status().isCreated())
@@ -64,7 +70,7 @@ class FriendshipControllerTest {
 		@DisplayName("friendId 없이 요청하면 400을 반환한다")
 		void missingFriendId() throws Exception {
 			mockMvc.perform(post("/api/friends/requests")
-					.header("X-User-Id", 1L)
+					.with(authentication(auth(1L)))
 					.contentType(MediaType.APPLICATION_JSON)
 					.content("{}"))
 				.andExpect(status().isBadRequest());
@@ -77,11 +83,11 @@ class FriendshipControllerTest {
 				.thenThrow(new BusinessException(ErrorCode.SELF_FRIEND_REQUEST));
 
 			mockMvc.perform(post("/api/friends/requests")
-					.header("X-User-Id", 1L)
+					.with(authentication(auth(1L)))
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(objectMapper.writeValueAsString(Map.of("friendId", 1))))
 				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath("$.code").value("F004"));
+				.andExpect(jsonPath("$.code").value("F003"));
 		}
 
 		@Test
@@ -91,11 +97,11 @@ class FriendshipControllerTest {
 				.thenThrow(new BusinessException(ErrorCode.ALREADY_FRIEND));
 
 			mockMvc.perform(post("/api/friends/requests")
-					.header("X-User-Id", 1L)
+					.with(authentication(auth(1L)))
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(objectMapper.writeValueAsString(Map.of("friendId", 2))))
 				.andExpect(status().isConflict())
-				.andExpect(jsonPath("$.code").value("F002"));
+				.andExpect(jsonPath("$.code").value("F005"));
 		}
 	}
 
@@ -109,7 +115,7 @@ class FriendshipControllerTest {
 			when(friendshipService.getIncomingRequests(2L)).thenReturn(List.of(pendingResponse()));
 
 			mockMvc.perform(get("/api/friends/requests/incoming")
-					.header("X-User-Id", 2L))
+					.with(authentication(auth(2L))))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.result").value("SUCCESS"))
 				.andExpect(jsonPath("$.data.length()").value(1));
@@ -128,7 +134,7 @@ class FriendshipControllerTest {
 			when(friendshipService.acceptRequest(2L, 1L)).thenReturn(accepted);
 
 			mockMvc.perform(post("/api/friends/requests/1/accept")
-					.header("X-User-Id", 2L))
+					.with(authentication(auth(2L))))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.data.status").value("ACCEPTED"));
 		}
@@ -140,7 +146,7 @@ class FriendshipControllerTest {
 				.thenThrow(new BusinessException(ErrorCode.FORBIDDEN));
 
 			mockMvc.perform(post("/api/friends/requests/1/accept")
-					.header("X-User-Id", 3L))
+					.with(authentication(auth(3L))))
 				.andExpect(status().isForbidden())
 				.andExpect(jsonPath("$.code").value("A002"));
 		}
@@ -149,10 +155,10 @@ class FriendshipControllerTest {
 		@DisplayName("존재하지 않는 요청이면 404를 반환한다")
 		void notFound() throws Exception {
 			when(friendshipService.acceptRequest(2L, 99L))
-				.thenThrow(new BusinessException(ErrorCode.FRIENDSHIP_NOT_FOUND));
+				.thenThrow(new BusinessException(ErrorCode.FRIEND_REQUEST_NOT_FOUND));
 
 			mockMvc.perform(post("/api/friends/requests/99/accept")
-					.header("X-User-Id", 2L))
+					.with(authentication(auth(2L))))
 				.andExpect(status().isNotFound())
 				.andExpect(jsonPath("$.code").value("F001"));
 		}
@@ -170,7 +176,7 @@ class FriendshipControllerTest {
 			when(friendshipService.rejectRequest(2L, 1L)).thenReturn(rejected);
 
 			mockMvc.perform(post("/api/friends/requests/1/reject")
-					.header("X-User-Id", 2L))
+					.with(authentication(auth(2L))))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.data.status").value("REJECTED"));
 		}
@@ -188,7 +194,7 @@ class FriendshipControllerTest {
 			when(friendshipService.getFriends(1L)).thenReturn(List.of(friend));
 
 			mockMvc.perform(get("/api/friends")
-					.header("X-User-Id", 1L))
+					.with(authentication(auth(1L))))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.data[0].friendName").value("Bob"))
 				.andExpect(jsonPath("$.data[0].friendId").value(2));

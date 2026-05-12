@@ -70,8 +70,7 @@ class FriendshipServiceTest {
 			User friend = mockUser(2L, "Bob");
 			when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 			when(userRepository.findById(2L)).thenReturn(Optional.of(friend));
-			when(friendshipRepository.existsByUser_IdAndFriend_Id(1L, 2L)).thenReturn(false);
-			when(friendshipRepository.existsByUser_IdAndFriend_Id(2L, 1L)).thenReturn(false);
+			when(friendshipRepository.existsBetween(1L, 2L)).thenReturn(false);
 			Friendship saved = pendingFriendship(1L, user, friend);
 			when(friendshipRepository.save(any())).thenReturn(saved);
 
@@ -106,30 +105,13 @@ class FriendshipServiceTest {
 		}
 
 		@Test
-		@DisplayName("이미 요청이 존재하면 ALREADY_FRIEND 예외가 발생한다")
+		@DisplayName("양방향으로 요청이나 관계가 이미 존재하면 ALREADY_FRIEND 예외가 발생한다")
 		void alreadyExists() {
-			// mockUser는 when() 밖에서 미리 생성 (중첩 when() 방지)
 			User alice = mockUser(1L, "Alice");
 			User bob = mockUser(2L, "Bob");
 			when(userRepository.findById(1L)).thenReturn(Optional.of(alice));
 			when(userRepository.findById(2L)).thenReturn(Optional.of(bob));
-			when(friendshipRepository.existsByUser_IdAndFriend_Id(1L, 2L)).thenReturn(true);
-
-			assertThatThrownBy(() -> friendshipService.sendRequest(1L, 2L))
-				.isInstanceOf(BusinessException.class)
-				.extracting(e -> ((BusinessException) e).getErrorCode())
-				.isEqualTo(ErrorCode.ALREADY_FRIEND);
-		}
-
-		@Test
-		@DisplayName("반대 방향 요청이 이미 있어도 ALREADY_FRIEND 예외가 발생한다")
-		void alreadyExistsReverse() {
-			User alice = mockUser(1L, "Alice");
-			User bob = mockUser(2L, "Bob");
-			when(userRepository.findById(1L)).thenReturn(Optional.of(alice));
-			when(userRepository.findById(2L)).thenReturn(Optional.of(bob));
-			when(friendshipRepository.existsByUser_IdAndFriend_Id(1L, 2L)).thenReturn(false);
-			when(friendshipRepository.existsByUser_IdAndFriend_Id(2L, 1L)).thenReturn(true);
+			when(friendshipRepository.existsBetween(1L, 2L)).thenReturn(true);
 
 			assertThatThrownBy(() -> friendshipService.sendRequest(1L, 2L))
 				.isInstanceOf(BusinessException.class)
@@ -192,18 +174,18 @@ class FriendshipServiceTest {
 		}
 
 		@Test
-		@DisplayName("존재하지 않는 요청이면 FRIENDSHIP_NOT_FOUND 예외가 발생한다")
+		@DisplayName("존재하지 않는 요청이면 FRIEND_REQUEST_NOT_FOUND 예외가 발생한다")
 		void notFound() {
 			when(friendshipRepository.findById(99L)).thenReturn(Optional.empty());
 
 			assertThatThrownBy(() -> friendshipService.acceptRequest(2L, 99L))
 				.isInstanceOf(BusinessException.class)
 				.extracting(e -> ((BusinessException) e).getErrorCode())
-				.isEqualTo(ErrorCode.FRIENDSHIP_NOT_FOUND);
+				.isEqualTo(ErrorCode.FRIEND_REQUEST_NOT_FOUND);
 		}
 
 		@Test
-		@DisplayName("이미 처리된 요청이면 BAD_REQUEST 예외가 발생한다")
+		@DisplayName("이미 처리된 요청이면 FRIEND_REQUEST_ALREADY_PROCESSED 예외가 발생한다")
 		void alreadyProcessed() {
 			User requester = mockUser(1L, "Alice");
 			User me = mockUser(2L, "Bob");
@@ -213,7 +195,7 @@ class FriendshipServiceTest {
 			assertThatThrownBy(() -> friendshipService.acceptRequest(2L, 10L))
 				.isInstanceOf(BusinessException.class)
 				.extracting(e -> ((BusinessException) e).getErrorCode())
-				.isEqualTo(ErrorCode.BAD_REQUEST);
+				.isEqualTo(ErrorCode.FRIEND_REQUEST_ALREADY_PROCESSED);
 		}
 	}
 
