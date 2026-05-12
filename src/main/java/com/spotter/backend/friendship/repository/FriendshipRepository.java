@@ -28,4 +28,6 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 	// 내가 요청하거나 받은 것 중 수락된 친구 관계 전체 조회
 	@Query("SELECT f FROM Friendship f WHERE (f.user.id = :userId OR f.friend.id = :userId) AND f.status = :status")
 	List<Friendship> findAllAcceptedByUserId(@Param("userId") Long userId, @Param("status") FriendshipStatus status);
+
+	void deleteByUser_IdOrFriend_Id(Long userId, Long friendId);
 }
