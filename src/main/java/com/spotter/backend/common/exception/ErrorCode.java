@@ -45,6 +45,7 @@ public enum ErrorCode {
     MEETUP_NOT_PARTICIPANT(HttpStatus.BAD_REQUEST, "M008", "참가하지 않은 모임입니다."),
     INVITATION_NOT_FOUND(HttpStatus.NOT_FOUND, "M009", "초대를 찾을 수 없습니다."),
     INVITATION_ALREADY_SENT(HttpStatus.CONFLICT, "M010", "이미 초대를 보낸 사용자입니다."),
+    INVITATION_ALREADY_RESPONDED(HttpStatus.CONFLICT, "M011", "이미 응답한 초대입니다."),
 
     // Category (카테고리, C-xxx)
     CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "C001", "카테고리를 찾을 수 없습니다."),

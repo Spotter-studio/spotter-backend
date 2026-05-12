@@ -1,6 +1,7 @@
 package com.spotter.backend.meetup.service;
 
 import com.spotter.backend.common.enums.FriendshipStatus;
+import com.spotter.backend.common.enums.InvitationStatus;
 import com.spotter.backend.common.exception.BusinessException;
 import com.spotter.backend.common.exception.ErrorCode;
 import com.spotter.backend.friendship.repository.FriendshipRepository;
@@ -52,9 +53,18 @@ public class MeetupInvitationsCommandService {
 	public MeetupInvitationsDTO.Response accept(Long userId, Long invitationId) {
 		User user = helper.findUser(userId);
 		MeetupInvitations invitation = findInvitation(invitationId, user.getId());
-		Meetups meetup = invitation.getMeetup();
 
+		if (invitation.getStatus() != InvitationStatus.PENDING) {
+			throw new BusinessException(ErrorCode.INVITATION_ALREADY_RESPONDED);
+		}
+
+		Meetups meetup = invitation.getMeetup();
 		helper.validateCapacity(meetup);
+
+		if (meetupParticipantsRepository.existsByMeetup_IdAndUser_Id(meetup.getId(), user.getId())) {
+			throw new BusinessException(ErrorCode.MEETUP_ALREADY_JOINED);
+		}
+
 		invitation.accept();
 		meetupParticipantsRepository.save(new MeetupParticipants(user, meetup));
 		return MeetupsMapper.toResponse(invitation);
@@ -63,6 +73,11 @@ public class MeetupInvitationsCommandService {
 	public MeetupInvitationsDTO.Response reject(Long userId, Long invitationId) {
 		User user = helper.findUser(userId);
 		MeetupInvitations invitation = findInvitation(invitationId, user.getId());
+
+		if (invitation.getStatus() != InvitationStatus.PENDING) {
+			throw new BusinessException(ErrorCode.INVITATION_ALREADY_RESPONDED);
+		}
+
 		invitation.reject();
 		return MeetupsMapper.toResponse(invitation);
 	}
