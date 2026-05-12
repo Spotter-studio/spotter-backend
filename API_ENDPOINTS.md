@@ -7,6 +7,8 @@
 | `POST` | `/api/users/signup` | Sign up with email, username, and password. |
 | `POST` | `/api/users/login` | Log in and issue a JWT access token. |
 | `GET` | `/api/users/me` | Get the current authenticated user's profile. |
+| `PATCH` | `/api/users/me` | Update the current user's name, email, or password. |
+| `DELETE` | `/api/users/me` | Delete the current user account and owned user relations. |
 
 ## Categories
 

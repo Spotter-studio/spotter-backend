@@ -22,4 +22,8 @@ public interface MeetupParticipantsRepository extends JpaRepository<MeetupPartic
 	List<ParticipantCount> countByMeetupIds(@Param("meetupIds") List<Long> meetupIds);
 
 	void deleteByMeetup_IdAndUser_Id(Long meetupId, Long userId);
+
+	void deleteByUser_Id(Long userId);
+
+	void deleteByMeetup_IdIn(List<Long> meetupIds);
 }

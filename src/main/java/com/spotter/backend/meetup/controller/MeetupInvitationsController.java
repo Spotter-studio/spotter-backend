@@ -1,5 +1,6 @@
 package com.spotter.backend.meetup.controller;
 
+import com.spotter.backend.auth.AuthenticatedUser;
 import com.spotter.backend.meetup.dto.MeetupInvitationsDTO;
 import com.spotter.backend.meetup.service.MeetupInvitationsCommandService;
 import com.spotter.backend.meetup.service.MeetupInvitationsQueryService;
@@ -32,12 +33,12 @@ public class MeetupInvitationsController {
 		@Valid @RequestBody MeetupInvitationsDTO.CreateRequest request
 	) {
 		return ResponseEntity.status(HttpStatus.CREATED)
-			.body(meetupInvitationsCommandService.invite(authentication.getName(), meetupId, request));
+			.body(meetupInvitationsCommandService.invite(AuthenticatedUser.id(authentication), meetupId, request));
 	}
 
 	@GetMapping("/incoming")
 	public ResponseEntity<List<MeetupInvitationsDTO.Response>> getIncoming(Authentication authentication) {
-		return ResponseEntity.ok(meetupInvitationsQueryService.getIncoming(authentication.getName()));
+		return ResponseEntity.ok(meetupInvitationsQueryService.getIncoming(AuthenticatedUser.id(authentication)));
 	}
 
 	@PostMapping("/{invitationId}/accept")
@@ -45,7 +46,7 @@ public class MeetupInvitationsController {
 		Authentication authentication,
 		@PathVariable Long invitationId
 	) {
-		return ResponseEntity.ok(meetupInvitationsCommandService.accept(authentication.getName(), invitationId));
+		return ResponseEntity.ok(meetupInvitationsCommandService.accept(AuthenticatedUser.id(authentication), invitationId));
 	}
 
 	@PostMapping("/{invitationId}/reject")
@@ -53,6 +54,6 @@ public class MeetupInvitationsController {
 		Authentication authentication,
 		@PathVariable Long invitationId
 	) {
-		return ResponseEntity.ok(meetupInvitationsCommandService.reject(authentication.getName(), invitationId));
+		return ResponseEntity.ok(meetupInvitationsCommandService.reject(AuthenticatedUser.id(authentication), invitationId));
 	}
 }

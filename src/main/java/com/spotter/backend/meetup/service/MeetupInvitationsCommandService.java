@@ -27,8 +27,8 @@ public class MeetupInvitationsCommandService {
 	private final UserRepository userRepository;
 	private final MeetupsServiceHelper helper;
 
-	public MeetupInvitationsDTO.Response invite(String email, Long meetupId, MeetupInvitationsDTO.CreateRequest request) {
-		User host = helper.findUser(email);
+	public MeetupInvitationsDTO.Response invite(Long userId, Long meetupId, MeetupInvitationsDTO.CreateRequest request) {
+		User host = helper.findUser(userId);
 		Meetups meetup = helper.findMeetup(meetupId);
 		helper.validateHost(host, meetup);
 
@@ -49,8 +49,8 @@ public class MeetupInvitationsCommandService {
 		return MeetupsMapper.toResponse(invitation);
 	}
 
-	public MeetupInvitationsDTO.Response accept(String email, Long invitationId) {
-		User user = helper.findUser(email);
+	public MeetupInvitationsDTO.Response accept(Long userId, Long invitationId) {
+		User user = helper.findUser(userId);
 		MeetupInvitations invitation = findInvitation(invitationId, user.getId());
 		Meetups meetup = invitation.getMeetup();
 
@@ -60,8 +60,8 @@ public class MeetupInvitationsCommandService {
 		return MeetupsMapper.toResponse(invitation);
 	}
 
-	public MeetupInvitationsDTO.Response reject(String email, Long invitationId) {
-		User user = helper.findUser(email);
+	public MeetupInvitationsDTO.Response reject(Long userId, Long invitationId) {
+		User user = helper.findUser(userId);
 		MeetupInvitations invitation = findInvitation(invitationId, user.getId());
 		invitation.reject();
 		return MeetupsMapper.toResponse(invitation);

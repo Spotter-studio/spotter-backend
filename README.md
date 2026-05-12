@@ -44,6 +44,8 @@ docker compose up -d
 | `SPRING_DATASOURCE_USERNAME` | `spotter` | DB 사용자명 |
 | `SPRING_DATASOURCE_PASSWORD` | `spotter` | DB 비밀번호 |
 | `SERVER_PORT` | `8080` | 서버 포트 |
+| `SPOTTER_JWT_SECRET` | `spotter-local-development-secret-change-me` | JWT HMAC 서명 secret |
+| `SPOTTER_JWT_EXPIRES_IN_SECONDS` | `3600` | JWT access token 만료 시간(초) |
 
 ---
 
@@ -51,7 +53,7 @@ docker compose up -d
 
 ```
 src/main/java/com/spotter/backend/
-├── auth/                        # Spring Security 설정
+├── auth/                        # Spring Security 및 JWT 인증
 │   └── SecurityConfig.java
 ├── category/                    # 장소 카테고리
 │   ├── dto/
