@@ -22,9 +22,7 @@ public final class SharedPostDTO {
 		@NotNull
 		SourceType sourceType,
 
-		String ocrText,
-
-		List<@Size(max = 1000) String> imageUrls
+		String ocrText
 	) {
 	}
 

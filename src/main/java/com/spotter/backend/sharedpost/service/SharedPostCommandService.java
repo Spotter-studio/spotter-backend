@@ -18,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,16 +36,19 @@ public class SharedPostCommandService {
 	private final ScrapRepository scrapRepository;
 
 	// User 정보 가져오는 로직 구현 시 변경 예정
-	public SharedPostDTO.Response create(String email, SharedPostDTO.CreateRequest request) {
+	public SharedPostDTO.Response create(String email, SharedPostDTO.CreateRequest request, List<MultipartFile> images) {
 		User user = userRepository.findByEmail(email)
 			.orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+
+		// TODO: S3 업로드 구현 후 실제 URL로 교체
+		List<String> imageUrls = List.of();
 
 		SharedPost sharedPost = new SharedPost(
 			user,
 			request.sourceUrl(),
 			request.sourceType(),
 			request.ocrText(),
-			request.imageUrls()
+			imageUrls
 		);
 
 		SharedPost saved = sharedPostRepository.save(sharedPost);
