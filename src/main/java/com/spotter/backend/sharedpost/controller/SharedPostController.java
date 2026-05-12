@@ -4,6 +4,9 @@ import com.spotter.backend.common.response.ApiResponse;
 import com.spotter.backend.sharedpost.dto.SharedPostDTO;
 import com.spotter.backend.sharedpost.service.SharedPostCommandService;
 import com.spotter.backend.sharedpost.service.SharedPostQueryService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -21,6 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@Tag(name = "Shared Posts", description = "공유 게시글 관련 API")
+@SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequestMapping("/api/shared-posts")
 @RequiredArgsConstructor
@@ -30,6 +35,7 @@ public class SharedPostController {
 	private final SharedPostQueryService sharedPostQueryService;
 	private final SharedPostCommandService sharedPostCommandService;
 
+	@Operation(summary = "공유 게시글 생성")
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<ApiResponse<SharedPostDTO.Response>> create(
 		Authentication authentication,
@@ -39,11 +45,13 @@ public class SharedPostController {
 		return ResponseEntity.ok(ApiResponse.onSuccess(sharedPostCommandService.create(authentication.getName(), request, images)));
 	}
 
+	@Operation(summary = "대기 중인 공유 게시글 목록 조회")
 	@GetMapping("/pending")
 	public ResponseEntity<ApiResponse<List<SharedPostDTO.Response>>> getPending(Authentication authentication) {
 		return ResponseEntity.ok(ApiResponse.onSuccess(sharedPostQueryService.getPending(authentication.getName())));
 	}
 
+	@Operation(summary = "공유 게시글 확정")
 	@PostMapping("/{postId}/confirm")
 	public ResponseEntity<ApiResponse<SharedPostDTO.Response>> confirm(
 		Authentication authentication,
@@ -53,6 +61,7 @@ public class SharedPostController {
 		return ResponseEntity.ok(ApiResponse.onSuccess(sharedPostCommandService.confirm(authentication.getName(), postId, request)));
 	}
 
+	@Operation(summary = "공유 게시글 삭제")
 	@DeleteMapping("/{postId}")
 	public ResponseEntity<ApiResponse<Void>> delete(
 		Authentication authentication,
