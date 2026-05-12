@@ -1,12 +1,10 @@
 package com.spotter.backend.meetup.controller;
 
 import com.spotter.backend.auth.AuthenticatedUser;
+import com.spotter.backend.meetup.controller.docs.MeetupsControllerDocs;
 import com.spotter.backend.meetup.dto.MeetupsDTO;
 import com.spotter.backend.meetup.service.MeetupsCommandService;
 import com.spotter.backend.meetup.service.MeetupsQueryService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,17 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "Meetups", description = "밋업 관련 API")
-@SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequestMapping("/api/meetups")
 @RequiredArgsConstructor
-public class MeetupsController {
+public class MeetupsController implements MeetupsControllerDocs {
 
 	private final MeetupsQueryService meetupsQueryService;
 	private final MeetupsCommandService meetupsCommandService;
 
-	@Operation(summary = "밋업 생성")
 	@PostMapping
 	public ResponseEntity<MeetupsDTO.Response> create(
 		Authentication authentication,
@@ -41,13 +36,11 @@ public class MeetupsController {
 			.body(meetupsCommandService.create(AuthenticatedUser.id(authentication), request));
 	}
 
-	@Operation(summary = "밋업 목록 조회")
 	@GetMapping
 	public ResponseEntity<List<MeetupsDTO.Response>> list(Authentication authentication) {
 		return ResponseEntity.ok(meetupsQueryService.list(AuthenticatedUser.id(authentication)));
 	}
 
-	@Operation(summary = "밋업 상세 조회")
 	@GetMapping("/{meetupId}")
 	public ResponseEntity<MeetupsDTO.Response> get(
 		Authentication authentication,
@@ -56,7 +49,6 @@ public class MeetupsController {
 		return ResponseEntity.ok(meetupsQueryService.get(AuthenticatedUser.id(authentication), meetupId));
 	}
 
-	@Operation(summary = "밋업 참여")
 	@PostMapping("/{meetupId}/join")
 	public ResponseEntity<MeetupsDTO.Response> join(
 		Authentication authentication,
@@ -65,7 +57,6 @@ public class MeetupsController {
 		return ResponseEntity.ok(meetupsCommandService.join(AuthenticatedUser.id(authentication), meetupId));
 	}
 
-	@Operation(summary = "밋업 취소")
 	@PostMapping("/{meetupId}/cancel")
 	public ResponseEntity<Void> cancel(
 		Authentication authentication,
@@ -75,7 +66,6 @@ public class MeetupsController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@Operation(summary = "밋업 나가기")
 	@PostMapping("/{meetupId}/leave")
 	public ResponseEntity<Void> leave(
 		Authentication authentication,
