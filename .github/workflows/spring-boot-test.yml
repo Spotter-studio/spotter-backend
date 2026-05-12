@@ -4,10 +4,11 @@ on:
   pull_request:
   push:
     branches: [main]
-
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      SPOTTER_JWT_SECRET: spotter-test-action-secret-not-used-in-deployment
 
     steps:
       - uses: actions/checkout@v4
