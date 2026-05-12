@@ -16,18 +16,20 @@ public final class FriendshipDTO {
 	) {
 	}
 
-	public record UpdateRequest(
-		@NotNull
-		FriendshipStatus status
-	) {
-	}
-
 	public record Response(
 		Long id,
 		Long userId,
 		Long friendId,
 		FriendshipStatus status,
 		LocalDateTime createdAt,
+		LocalDateTime acceptedAt
+	) {
+	}
+
+	public record FriendResponse(
+		Long friendshipId,
+		Long friendId,
+		String friendName,
 		LocalDateTime acceptedAt
 	) {
 	}
