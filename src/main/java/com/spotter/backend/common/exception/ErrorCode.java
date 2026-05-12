@@ -31,6 +31,7 @@ public enum ErrorCode {
 
     // Location (장소, L-xxx)
     LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "L001", "장소를 찾을 수 없습니다."),
+    LOCATION_INVALID_INPUT(HttpStatus.BAD_REQUEST, "L002", "신규 장소 등록에 필요한 정보가 부족합니다."),
 
     // Meetup (밋업, M-xxx)
     MEETUP_NOT_FOUND(HttpStatus.NOT_FOUND, "M001", "밋업을 찾을 수 없습니다."),
@@ -44,8 +45,13 @@ public enum ErrorCode {
     INVITATION_NOT_FOUND(HttpStatus.NOT_FOUND, "M009", "초대를 찾을 수 없습니다."),
     INVITATION_ALREADY_SENT(HttpStatus.CONFLICT, "M010", "이미 초대를 보낸 사용자입니다."),
 
+    // Category (카테고리, C-xxx)
+    CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "C001", "카테고리를 찾을 수 없습니다."),
+
     // SharedPost (공유 게시글, SP-xxx)
-    SHARED_POST_NOT_FOUND(HttpStatus.NOT_FOUND, "SP001", "공유 게시글을 찾을 수 없습니다.");
+    SHARED_POST_NOT_FOUND(HttpStatus.NOT_FOUND, "SP001", "공유 게시글을 찾을 수 없습니다."),
+    SHARED_POST_FORBIDDEN(HttpStatus.FORBIDDEN, "SP002", "해당 게시글에 대한 권한이 없습니다."),
+    SHARED_POST_INVALID_STATUS(HttpStatus.CONFLICT, "SP003", "게시글의 상태가 올바르지 않습니다.");
 
     private final HttpStatus status;
     private final String code;
