@@ -1,6 +1,7 @@
 package com.spotter.backend.user.controller;
 
 import com.spotter.backend.auth.AuthenticatedUser;
+import com.spotter.backend.common.response.ApiResponse;
 import com.spotter.backend.user.controller.docs.UserControllerDocs;
 import com.spotter.backend.user.dto.UserDTO;
 import com.spotter.backend.user.service.UserAuthService;
@@ -29,26 +30,26 @@ public class UserController implements UserControllerDocs {
 	private final UserAuthService userAuthService;
 
 	@PostMapping("/signup")
-	public ResponseEntity<UserDTO.Response> signup(@Valid @RequestBody UserDTO.CreateRequest request) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(userCommandService.signup(request));
+	public ResponseEntity<ApiResponse<UserDTO.Response>> signup(@Valid @RequestBody UserDTO.CreateRequest request) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.onCreated(userCommandService.signup(request)));
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<UserDTO.LoginResponse> login(@Valid @RequestBody UserDTO.LoginRequest request) {
-		return ResponseEntity.ok(userAuthService.login(request));
+	public ResponseEntity<ApiResponse<UserDTO.LoginResponse>> login(@Valid @RequestBody UserDTO.LoginRequest request) {
+		return ResponseEntity.ok(ApiResponse.onSuccess(userAuthService.login(request)));
 	}
 
 	@GetMapping("/me")
-	public ResponseEntity<UserDTO.Response> me(Authentication authentication) {
-		return ResponseEntity.ok(userQueryService.me(AuthenticatedUser.id(authentication)));
+	public ResponseEntity<ApiResponse<UserDTO.Response>> me(Authentication authentication) {
+		return ResponseEntity.ok(ApiResponse.onSuccess(userQueryService.me(AuthenticatedUser.id(authentication))));
 	}
 
 	@PatchMapping("/me")
-	public ResponseEntity<UserDTO.Response> updateMe(
+	public ResponseEntity<ApiResponse<UserDTO.Response>> updateMe(
 		Authentication authentication,
 		@Valid @RequestBody UserDTO.UpdateRequest request
 	) {
-		return ResponseEntity.ok(userCommandService.updateMe(AuthenticatedUser.id(authentication), request));
+		return ResponseEntity.ok(ApiResponse.onSuccess(userCommandService.updateMe(AuthenticatedUser.id(authentication), request)));
 	}
 
 	@DeleteMapping("/me")

@@ -1,5 +1,6 @@
 package com.spotter.backend.meetup.controller.docs;
 
+import com.spotter.backend.common.response.ApiResponse;
 import com.spotter.backend.meetup.dto.MeetupsDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -16,16 +17,16 @@ import java.util.List;
 public interface MeetupsControllerDocs {
 
 	@Operation(summary = "밋업 생성")
-	ResponseEntity<MeetupsDTO.Response> create(Authentication authentication, @Valid @RequestBody MeetupsDTO.CreateRequest request);
+	ResponseEntity<ApiResponse<MeetupsDTO.Response>> create(Authentication authentication, @Valid @RequestBody MeetupsDTO.CreateRequest request);
 
 	@Operation(summary = "밋업 목록 조회")
-	ResponseEntity<List<MeetupsDTO.Response>> list(Authentication authentication);
+	ResponseEntity<ApiResponse<List<MeetupsDTO.Response>>> list(Authentication authentication);
 
 	@Operation(summary = "밋업 상세 조회")
-	ResponseEntity<MeetupsDTO.Response> get(Authentication authentication, Long meetupId);
+	ResponseEntity<ApiResponse<MeetupsDTO.Response>> get(Authentication authentication, Long meetupId);
 
 	@Operation(summary = "밋업 참여")
-	ResponseEntity<MeetupsDTO.Response> join(Authentication authentication, Long meetupId);
+	ResponseEntity<ApiResponse<MeetupsDTO.Response>> join(Authentication authentication, Long meetupId);
 
 	@Operation(summary = "밋업 취소")
 	ResponseEntity<Void> cancel(Authentication authentication, Long meetupId);
