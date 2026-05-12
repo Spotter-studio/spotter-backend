@@ -27,7 +27,7 @@ public class FriendshipController {
 	// 친구 요청 전송. 자기 자신·이미 존재하는 요청은 불가
 	@PostMapping("/requests")
 	public ResponseEntity<ApiResponse<FriendshipDTO.Response>> sendRequest(
-		@AuthenticationPrincipal Long userId
+		@AuthenticationPrincipal Long userId,
 		@RequestBody @Valid FriendshipDTO.CreateRequest request
 	) {
 		FriendshipDTO.Response response = friendshipService.sendRequest(userId, request.friendId());
@@ -55,7 +55,7 @@ public class FriendshipController {
 	// 친구 요청 수락. 요청을 받은 사람만 가능. 이미 처리된 요청은 400 반환
 	@PostMapping("/requests/{requestId}/accept")
 	public ResponseEntity<ApiResponse<FriendshipDTO.Response>> acceptRequest(
-		@AuthenticationPrincipal Long userId
+		@AuthenticationPrincipal Long userId,
 		@PathVariable Long requestId
 	) {
 		FriendshipDTO.Response response = friendshipService.acceptRequest(userId, requestId);
@@ -65,7 +65,7 @@ public class FriendshipController {
 	// 친구 요청 거절. 요청을 받은 사람만 가능. 이미 처리된 요청은 400 반환
 	@PostMapping("/requests/{requestId}/reject")
 	public ResponseEntity<ApiResponse<FriendshipDTO.Response>> rejectRequest(
-		@AuthenticationPrincipal Long userId
+		@AuthenticationPrincipal Long userId,
 		@PathVariable Long requestId
 	) {
 		FriendshipDTO.Response response = friendshipService.rejectRequest(userId, requestId);
