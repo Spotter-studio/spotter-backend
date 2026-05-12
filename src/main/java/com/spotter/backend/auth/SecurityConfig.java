@@ -32,30 +32,46 @@ public class SecurityConfig {
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .exceptionHandling(exception ->
-                exception.authenticationEntryPoint(
-                    (request, response, authException) -> {
-                        response.setStatus(
-                            ErrorCode.UNAUTHORIZED.getStatus().value()
-                        );
-                        response.setContentType(
-                            MediaType.APPLICATION_JSON_VALUE
-                        );
-                        objectMapper.writeValue(
-                            response.getWriter(),
-                            ApiResponse.onFailure(ErrorCode.UNAUTHORIZED)
-                        );
-                    }
-                )
+                exception
+                    .authenticationEntryPoint(
+                        (request, response, authException) -> {
+                            response.setStatus(
+                                ErrorCode.UNAUTHORIZED.getStatus().value()
+                            );
+                            response.setContentType(
+                                MediaType.APPLICATION_JSON_VALUE
+                            );
+                            objectMapper.writeValue(
+                                response.getWriter(),
+                                ApiResponse.onFailure(ErrorCode.UNAUTHORIZED)
+                            );
+                        }
+                    )
+                    .accessDeniedHandler(
+                        (request, response, accessDeniedException) -> {
+                            response.setStatus(
+                                ErrorCode.FORBIDDEN.getStatus().value()
+                            );
+                            response.setContentType(
+                                MediaType.APPLICATION_JSON_VALUE
+                            );
+                            objectMapper.writeValue(
+                                response.getWriter(),
+                                ApiResponse.onFailure(ErrorCode.FORBIDDEN)
+                            );
+                        }
+                    )
             )
             .authorizeHttpRequests(auth ->
                 auth
                     .requestMatchers(
+                        // 이 3가지 엔드포인트는 auth 없이도 허용(permitAll)
                         "/api/health",
                         "/api/users/signup",
                         "/api/users/login"
                     )
                     .permitAll()
-                    .anyRequest()
+                    .anyRequest() // 그 외 모든 엔드포인트는 auth 필요
                     .authenticated()
             )
             .addFilterBefore(
