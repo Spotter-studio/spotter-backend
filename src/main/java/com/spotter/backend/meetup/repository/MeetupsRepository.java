@@ -13,4 +13,6 @@ public interface MeetupsRepository extends JpaRepository<Meetups, Long> {
 	List<Meetups> findAllByVisibilityAndHost_IdIn(MeetupVisibility visibility, List<Long> hostIds);
 
 	List<Meetups> findAllByHost_Id(Long hostId);
+
+	void deleteByHost_Id(Long hostId);
 }

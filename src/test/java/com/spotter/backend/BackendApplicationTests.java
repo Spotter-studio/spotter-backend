@@ -23,20 +23,38 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 })
 class BackendApplicationTests {
 
-	// @EnableJpaAuditing이 요구하는 JPA 메타모델을 mock으로 대체
-	@MockitoBean JpaMetamodelMappingContext jpaMetamodelMappingContext;
+	@MockitoBean
+	UserRepository userRepository;
 
-	// JPA 비활성화 시 레포지토리 빈이 없으므로 전부 mock 처리
-	@MockitoBean UserRepository userRepository;
-	@MockitoBean FriendshipRepository friendshipRepository;
-	@MockitoBean LocationRepository locationRepository;
-	@MockitoBean CategoryRepository categoryRepository;
-	@MockitoBean ScrapRepository scrapRepository;
-	@MockitoBean SharedPostRepository sharedPostRepository;
-	@MockitoBean MeetupsRepository meetupsRepository;
-	@MockitoBean MeetupParticipantsRepository meetupParticipantsRepository;
-	@MockitoBean MeetupInvitationsRepository meetupInvitationsRepository;
-	@MockitoBean JdbcTemplate jdbcTemplate;
+	@MockitoBean
+	CategoryRepository categoryRepository;
+
+	@MockitoBean
+	LocationRepository locationRepository;
+
+	@MockitoBean
+	FriendshipRepository friendshipRepository;
+
+	@MockitoBean
+	MeetupsRepository meetupsRepository;
+
+	@MockitoBean
+	MeetupParticipantsRepository meetupParticipantsRepository;
+
+	@MockitoBean
+	MeetupInvitationsRepository meetupInvitationsRepository;
+
+	@MockitoBean
+	ScrapRepository scrapRepository;
+
+	@MockitoBean
+	SharedPostRepository sharedPostRepository;
+
+	@MockitoBean
+	JdbcTemplate jdbcTemplate;
+
+	@MockitoBean
+	JpaMetamodelMappingContext jpaMetamodelMappingContext;
 
 	@Test
 	void contextLoads() {

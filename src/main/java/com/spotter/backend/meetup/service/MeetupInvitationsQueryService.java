@@ -17,8 +17,8 @@ public class MeetupInvitationsQueryService {
 	private final MeetupInvitationsRepository meetupInvitationsRepository;
 	private final MeetupsServiceHelper helper;
 
-	public List<MeetupInvitationsDTO.Response> getIncoming(String email) {
-		User user = helper.findUser(email);
+	public List<MeetupInvitationsDTO.Response> getIncoming(Long userId) {
+		User user = helper.findUser(userId);
 		return meetupInvitationsRepository.findAllByUser_Id(user.getId())
 			.stream()
 			.map(MeetupsMapper::toResponse)

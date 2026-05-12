@@ -32,4 +32,30 @@ public class User extends BaseTimeEntity {
 
 	@Column(name = "preference_doc", nullable = false, length = 2000)
 	private String preferenceDoc;
+
+	private User(String name, String email, String passwordHash) {
+		this.name = name;
+		this.email = email;
+		this.passwordHash = passwordHash;
+		this.preferenceDoc = "";
+	}
+
+	public static User create(String name, String email, String passwordHash) {
+		return new User(name, email, passwordHash);
+	}
+
+	public void updateProfile(String name, String email) {
+		if (name != null) {
+			this.name = name;
+		}
+		if (email != null) {
+			this.email = email;
+		}
+	}
+
+	public void updatePassword(String passwordHash) {
+		if (passwordHash != null) {
+			this.passwordHash = passwordHash;
+		}
+	}
 }

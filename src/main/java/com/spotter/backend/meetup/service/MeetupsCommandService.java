@@ -29,8 +29,8 @@ public class MeetupsCommandService {
 	private final FriendshipRepository friendshipRepository;
 	private final MeetupsServiceHelper helper;
 
-	public MeetupsDTO.Response create(String email, MeetupsDTO.CreateRequest request) {
-		User user = helper.findUser(email);
+	public MeetupsDTO.Response create(Long userId, MeetupsDTO.CreateRequest request) {
+		User user = helper.findUser(userId);
 		Location location = locationRepository.findById(request.locationId())
 			.orElseThrow(() -> new BusinessException(ErrorCode.LOCATION_NOT_FOUND));
 
@@ -42,8 +42,8 @@ public class MeetupsCommandService {
 		return MeetupsMapper.toResponse(meetup, 1);
 	}
 
-	public MeetupsDTO.Response join(String email, Long meetupId) {
-		User user = helper.findUser(email);
+	public MeetupsDTO.Response join(Long userId, Long meetupId) {
+		User user = helper.findUser(userId);
 		Meetups meetup = helper.findMeetup(meetupId);
 
 		if (meetup.getStatus() != MeetupStatus.RECRUITING) {
@@ -66,15 +66,20 @@ public class MeetupsCommandService {
 		return MeetupsMapper.toResponse(meetup, (int) (currentCount + 1));
 	}
 
-	public void cancel(String email, Long meetupId) {
-		User user = helper.findUser(email);
+	public void cancel(Long userId, Long meetupId) {
+		User user = helper.findUser(userId);
 		Meetups meetup = helper.findMeetup(meetupId);
 		helper.validateHost(user, meetup);
+
+		if (meetup.getStatus() != MeetupStatus.RECRUITING) {
+			throw new BusinessException(ErrorCode.MEETUP_NOT_RECRUITING);
+		}
+
 		meetup.cancel();
 	}
 
-	public void leave(String email, Long meetupId) {
-		User user = helper.findUser(email);
+	public void leave(Long userId, Long meetupId) {
+		User user = helper.findUser(userId);
 		Meetups meetup = helper.findMeetup(meetupId);
 
 		if (meetup.getHost().getId().equals(user.getId())) {

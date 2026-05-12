@@ -10,5 +10,10 @@ import java.util.List;
 public interface SharedPostRepository extends JpaRepository<SharedPost, Long> {
 
 	@EntityGraph(attributePaths = {"locations", "locations.category"})
+	List<SharedPost> findByUser_Id(Long userId);
+
+	void deleteByUser_Id(Long userId);
+  
+	@EntityGraph(attributePaths = {"locations", "locations.category"})
 	List<SharedPost> findByUser_IdAndStatus(Long userId, SharedPostStatus status);
 }
