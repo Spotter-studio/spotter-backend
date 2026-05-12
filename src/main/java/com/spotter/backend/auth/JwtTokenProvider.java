@@ -28,9 +28,13 @@ public class JwtTokenProvider {
 
 	public JwtTokenProvider(
 		ObjectMapper objectMapper,
-		@Value("${spotter.jwt.secret:spotter-local-development-secret-change-me}") String secret,
+		@Value("${spotter.jwt.secret}") String secret,
 		@Value("${spotter.jwt.expires-in-seconds:3600}") long expiresInSeconds
 	) {
+		if (secret == null || secret.isBlank()) {
+			throw new IllegalStateException("Required property 'spotter.jwt.secret' must be configured and non-blank");
+		}
+
 		this.objectMapper = objectMapper;
 		this.secretBytes = secret.getBytes(StandardCharsets.UTF_8);
 		this.expiresInSeconds = expiresInSeconds;
