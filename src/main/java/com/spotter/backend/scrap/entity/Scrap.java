@@ -21,6 +21,7 @@ import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,7 @@ public class Scrap extends BaseTimeEntity {
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name = "scrap_source_url", joinColumns = @JoinColumn(name = "scrap_id"))
 	@Column(name = "source_url", length = 1000, nullable = false)
+	@BatchSize(size = 50)
 	private List<String> sourceUrls = new ArrayList<>();
 
 	@Convert(converter = SourceTypeConverter.class)
@@ -68,6 +70,17 @@ public class Scrap extends BaseTimeEntity {
 	}
 
 	public void addSourceUrl(String sourceUrl) {
-		this.sourceUrls.add(sourceUrl);
+		if (!this.sourceUrls.contains(sourceUrl)) {
+			this.sourceUrls.add(sourceUrl);
+		}
+	}
+
+	public void update(Integer visitCount, SourceType sourceType) {
+		if (visitCount != null) {
+			this.visitCount = visitCount;
+		}
+		if (sourceType != null) {
+			this.sourceType = sourceType;
+		}
 	}
 }

@@ -50,6 +50,10 @@ public enum ErrorCode {
     // Category (카테고리, C-xxx)
     CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "C001", "카테고리를 찾을 수 없습니다."),
 
+    // Scrap (스크랩, SC-xxx)
+    SCRAP_NOT_FOUND(HttpStatus.NOT_FOUND, "SC001", "스크랩을 찾을 수 없습니다."),
+    SCRAP_FORBIDDEN(HttpStatus.FORBIDDEN, "SC002", "해당 스크랩에 대한 권한이 없습니다."),
+
     // SharedPost (공유 게시글, SP-xxx)
     SHARED_POST_NOT_FOUND(HttpStatus.NOT_FOUND, "SP001", "공유 게시글을 찾을 수 없습니다."),
     SHARED_POST_FORBIDDEN(HttpStatus.FORBIDDEN, "SP002", "해당 게시글에 대한 권한이 없습니다."),

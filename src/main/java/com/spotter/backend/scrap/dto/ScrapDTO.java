@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public final class ScrapDTO {
 
@@ -38,7 +39,9 @@ public final class ScrapDTO {
 		Long id,
 		Long userId,
 		Long locationId,
-		String sourceUrl,
+		String locationName,
+		Integer categoryId,
+		List<String> sourceUrls,
 		SourceType sourceType,
 		Integer visitCount,
 		LocalDateTime createdAt
