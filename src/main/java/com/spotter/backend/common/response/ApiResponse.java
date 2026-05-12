@@ -31,6 +31,14 @@ public record ApiResponse<T>(
         return new ApiResponse<>(Result.SUCCESS, "200", "요청이 성공적으로 처리되었습니다.", null, LocalDateTime.now());
     }
 
+    public static <T> ApiResponse<T> onCreated(T data) {
+        return new ApiResponse<>(Result.SUCCESS, "201", "리소스가 성공적으로 생성되었습니다.", data, LocalDateTime.now());
+    }
+
+    public static ApiResponse<Void> onNoContent() {
+        return new ApiResponse<>(Result.SUCCESS, "204", "처리가 완료되었습니다.", null, LocalDateTime.now());
+    }
+
     public static ApiResponse<Void> onFailure(ErrorCode errorCode) {
         return new ApiResponse<>(Result.FAIL, errorCode.getCode(), errorCode.getMessage(), null, LocalDateTime.now());
     }

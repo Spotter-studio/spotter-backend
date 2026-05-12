@@ -1,6 +1,8 @@
 package com.spotter.backend.meetup.controller;
 
 import com.spotter.backend.auth.AuthenticatedUser;
+import com.spotter.backend.common.response.ApiResponse;
+import com.spotter.backend.meetup.controller.docs.MeetupInvitationsControllerDocs;
 import com.spotter.backend.meetup.dto.MeetupInvitationsDTO;
 import com.spotter.backend.meetup.service.MeetupInvitationsCommandService;
 import com.spotter.backend.meetup.service.MeetupInvitationsQueryService;
@@ -21,39 +23,39 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/meetup-invitations")
 @RequiredArgsConstructor
-public class MeetupInvitationsController {
+public class MeetupInvitationsController implements MeetupInvitationsControllerDocs {
 
 	private final MeetupInvitationsQueryService meetupInvitationsQueryService;
 	private final MeetupInvitationsCommandService meetupInvitationsCommandService;
 
 	@PostMapping("/{meetupId}/invitations")
-	public ResponseEntity<MeetupInvitationsDTO.Response> invite(
+	public ResponseEntity<ApiResponse<MeetupInvitationsDTO.Response>> invite(
 		Authentication authentication,
 		@PathVariable Long meetupId,
 		@Valid @RequestBody MeetupInvitationsDTO.CreateRequest request
 	) {
 		return ResponseEntity.status(HttpStatus.CREATED)
-			.body(meetupInvitationsCommandService.invite(AuthenticatedUser.id(authentication), meetupId, request));
+			.body(ApiResponse.onCreated(meetupInvitationsCommandService.invite(AuthenticatedUser.id(authentication), meetupId, request)));
 	}
 
 	@GetMapping("/incoming")
-	public ResponseEntity<List<MeetupInvitationsDTO.Response>> getIncoming(Authentication authentication) {
-		return ResponseEntity.ok(meetupInvitationsQueryService.getIncoming(AuthenticatedUser.id(authentication)));
+	public ResponseEntity<ApiResponse<List<MeetupInvitationsDTO.Response>>> getIncoming(Authentication authentication) {
+		return ResponseEntity.ok(ApiResponse.onSuccess(meetupInvitationsQueryService.getIncoming(AuthenticatedUser.id(authentication))));
 	}
 
 	@PostMapping("/{invitationId}/accept")
-	public ResponseEntity<MeetupInvitationsDTO.Response> accept(
+	public ResponseEntity<ApiResponse<MeetupInvitationsDTO.Response>> accept(
 		Authentication authentication,
 		@PathVariable Long invitationId
 	) {
-		return ResponseEntity.ok(meetupInvitationsCommandService.accept(AuthenticatedUser.id(authentication), invitationId));
+		return ResponseEntity.ok(ApiResponse.onSuccess(meetupInvitationsCommandService.accept(AuthenticatedUser.id(authentication), invitationId)));
 	}
 
 	@PostMapping("/{invitationId}/reject")
-	public ResponseEntity<MeetupInvitationsDTO.Response> reject(
+	public ResponseEntity<ApiResponse<MeetupInvitationsDTO.Response>> reject(
 		Authentication authentication,
 		@PathVariable Long invitationId
 	) {
-		return ResponseEntity.ok(meetupInvitationsCommandService.reject(AuthenticatedUser.id(authentication), invitationId));
+		return ResponseEntity.ok(ApiResponse.onSuccess(meetupInvitationsCommandService.reject(AuthenticatedUser.id(authentication), invitationId)));
 	}
 }
