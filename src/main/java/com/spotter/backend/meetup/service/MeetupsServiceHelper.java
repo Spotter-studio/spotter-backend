@@ -18,8 +18,8 @@ class MeetupsServiceHelper {
 	private final MeetupsRepository meetupsRepository;
 	private final MeetupParticipantsRepository meetupParticipantsRepository;
 
-	User findUser(String email) {
-		return userRepository.findByEmail(email)
+	User findUser(Long userId) {
+		return userRepository.findById(userId)
 			.orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 	}
 

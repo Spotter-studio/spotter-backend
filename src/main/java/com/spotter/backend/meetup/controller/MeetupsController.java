@@ -1,5 +1,6 @@
 package com.spotter.backend.meetup.controller;
 
+import com.spotter.backend.auth.AuthenticatedUser;
 import com.spotter.backend.meetup.dto.MeetupsDTO;
 import com.spotter.backend.meetup.service.MeetupsCommandService;
 import com.spotter.backend.meetup.service.MeetupsQueryService;
@@ -30,12 +31,13 @@ public class MeetupsController {
 		Authentication authentication,
 		@Valid @RequestBody MeetupsDTO.CreateRequest request
 	) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(meetupsCommandService.create(authentication.getName(), request));
+		return ResponseEntity.status(HttpStatus.CREATED)
+			.body(meetupsCommandService.create(AuthenticatedUser.id(authentication), request));
 	}
 
 	@GetMapping
 	public ResponseEntity<List<MeetupsDTO.Response>> list(Authentication authentication) {
-		return ResponseEntity.ok(meetupsQueryService.list(authentication.getName()));
+		return ResponseEntity.ok(meetupsQueryService.list(AuthenticatedUser.id(authentication)));
 	}
 
 	@GetMapping("/{meetupId}")
@@ -43,7 +45,7 @@ public class MeetupsController {
 		Authentication authentication,
 		@PathVariable Long meetupId
 	) {
-		return ResponseEntity.ok(meetupsQueryService.get(authentication.getName(), meetupId));
+		return ResponseEntity.ok(meetupsQueryService.get(AuthenticatedUser.id(authentication), meetupId));
 	}
 
 	@PostMapping("/{meetupId}/join")
@@ -51,7 +53,7 @@ public class MeetupsController {
 		Authentication authentication,
 		@PathVariable Long meetupId
 	) {
-		return ResponseEntity.ok(meetupsCommandService.join(authentication.getName(), meetupId));
+		return ResponseEntity.ok(meetupsCommandService.join(AuthenticatedUser.id(authentication), meetupId));
 	}
 
 	@PostMapping("/{meetupId}/cancel")
@@ -59,7 +61,7 @@ public class MeetupsController {
 		Authentication authentication,
 		@PathVariable Long meetupId
 	) {
-		meetupsCommandService.cancel(authentication.getName(), meetupId);
+		meetupsCommandService.cancel(AuthenticatedUser.id(authentication), meetupId);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -68,7 +70,7 @@ public class MeetupsController {
 		Authentication authentication,
 		@PathVariable Long meetupId
 	) {
-		meetupsCommandService.leave(authentication.getName(), meetupId);
+		meetupsCommandService.leave(AuthenticatedUser.id(authentication), meetupId);
 		return ResponseEntity.noContent().build();
 	}
 }

@@ -33,8 +33,8 @@ public class MeetupsQueryService {
 	private final FriendshipRepository friendshipRepository;
 	private final MeetupsServiceHelper helper;
 
-	public List<MeetupsDTO.Response> list(String email) {
-		User user = helper.findUser(email);
+	public List<MeetupsDTO.Response> list(Long userId) {
+		User user = helper.findUser(userId);
 		List<Long> friendIds = getFriendIds(user.getId());
 
 		List<Meetups> meetups = new ArrayList<>(meetupsRepository.findAllByVisibility(MeetupVisibility.PUBLIC));
@@ -56,8 +56,8 @@ public class MeetupsQueryService {
 			.toList();
 	}
 
-	public MeetupsDTO.Response get(String email, Long meetupId) {
-		User user = helper.findUser(email);
+	public MeetupsDTO.Response get(Long userId, Long meetupId) {
+		User user = helper.findUser(userId);
 		Meetups meetup = helper.findMeetup(meetupId);
 		checkAccess(user, meetup);
 		return MeetupsMapper.toResponse(meetup, (int) meetupParticipantsRepository.countByMeetup_Id(meetupId));
