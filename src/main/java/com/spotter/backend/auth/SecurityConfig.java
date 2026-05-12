@@ -41,6 +41,7 @@ public class SecurityConfig {
                             response.setContentType(
                                 MediaType.APPLICATION_JSON_VALUE
                             );
+                            response.setCharacterEncoding("UTF-8");
                             objectMapper.writeValue(
                                 response.getWriter(),
                                 ApiResponse.onFailure(ErrorCode.UNAUTHORIZED)
@@ -55,6 +56,7 @@ public class SecurityConfig {
                             response.setContentType(
                                 MediaType.APPLICATION_JSON_VALUE
                             );
+                            response.setCharacterEncoding("UTF-8");
                             objectMapper.writeValue(
                                 response.getWriter(),
                                 ApiResponse.onFailure(ErrorCode.FORBIDDEN)
