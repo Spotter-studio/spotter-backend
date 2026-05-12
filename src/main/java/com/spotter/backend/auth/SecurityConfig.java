@@ -70,7 +70,11 @@ public class SecurityConfig {
                         // 이 3가지 엔드포인트는 auth 없이도 허용(permitAll)
                         "/api/health",
                         "/api/users/signup",
-                        "/api/users/login"
+                        "/api/users/login",
+                        // Swagger UI
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/swagger-ui.html"
                     )
                     .permitAll()
                     .anyRequest() // 그 외 모든 엔드포인트는 auth 필요

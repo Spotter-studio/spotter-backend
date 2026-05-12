@@ -1,6 +1,7 @@
 package com.spotter.backend.sharedpost.controller;
 
 import com.spotter.backend.common.response.ApiResponse;
+import com.spotter.backend.sharedpost.controller.docs.SharedPostControllerDocs;
 import com.spotter.backend.sharedpost.dto.SharedPostDTO;
 import com.spotter.backend.sharedpost.service.SharedPostCommandService;
 import com.spotter.backend.sharedpost.service.SharedPostQueryService;
@@ -24,7 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/shared-posts")
 @RequiredArgsConstructor
-public class SharedPostController {
+public class SharedPostController implements SharedPostControllerDocs {
 
 	// 단순 목록만 가져오는 경우 queryService 사용
 	private final SharedPostQueryService sharedPostQueryService;

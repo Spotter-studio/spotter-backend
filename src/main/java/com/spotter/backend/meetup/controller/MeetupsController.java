@@ -1,6 +1,8 @@
 package com.spotter.backend.meetup.controller;
 
 import com.spotter.backend.auth.AuthenticatedUser;
+import com.spotter.backend.common.response.ApiResponse;
+import com.spotter.backend.meetup.controller.docs.MeetupsControllerDocs;
 import com.spotter.backend.meetup.dto.MeetupsDTO;
 import com.spotter.backend.meetup.service.MeetupsCommandService;
 import com.spotter.backend.meetup.service.MeetupsQueryService;
@@ -21,39 +23,39 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/meetups")
 @RequiredArgsConstructor
-public class MeetupsController {
+public class MeetupsController implements MeetupsControllerDocs {
 
 	private final MeetupsQueryService meetupsQueryService;
 	private final MeetupsCommandService meetupsCommandService;
 
 	@PostMapping
-	public ResponseEntity<MeetupsDTO.Response> create(
+	public ResponseEntity<ApiResponse<MeetupsDTO.Response>> create(
 		Authentication authentication,
 		@Valid @RequestBody MeetupsDTO.CreateRequest request
 	) {
 		return ResponseEntity.status(HttpStatus.CREATED)
-			.body(meetupsCommandService.create(AuthenticatedUser.id(authentication), request));
+			.body(ApiResponse.onCreated(meetupsCommandService.create(AuthenticatedUser.id(authentication), request)));
 	}
 
 	@GetMapping
-	public ResponseEntity<List<MeetupsDTO.Response>> list(Authentication authentication) {
-		return ResponseEntity.ok(meetupsQueryService.list(AuthenticatedUser.id(authentication)));
+	public ResponseEntity<ApiResponse<List<MeetupsDTO.Response>>> list(Authentication authentication) {
+		return ResponseEntity.ok(ApiResponse.onSuccess(meetupsQueryService.list(AuthenticatedUser.id(authentication))));
 	}
 
 	@GetMapping("/{meetupId}")
-	public ResponseEntity<MeetupsDTO.Response> get(
+	public ResponseEntity<ApiResponse<MeetupsDTO.Response>> get(
 		Authentication authentication,
 		@PathVariable Long meetupId
 	) {
-		return ResponseEntity.ok(meetupsQueryService.get(AuthenticatedUser.id(authentication), meetupId));
+		return ResponseEntity.ok(ApiResponse.onSuccess(meetupsQueryService.get(AuthenticatedUser.id(authentication), meetupId)));
 	}
 
 	@PostMapping("/{meetupId}/join")
-	public ResponseEntity<MeetupsDTO.Response> join(
+	public ResponseEntity<ApiResponse<MeetupsDTO.Response>> join(
 		Authentication authentication,
 		@PathVariable Long meetupId
 	) {
-		return ResponseEntity.ok(meetupsCommandService.join(AuthenticatedUser.id(authentication), meetupId));
+		return ResponseEntity.ok(ApiResponse.onSuccess(meetupsCommandService.join(AuthenticatedUser.id(authentication), meetupId)));
 	}
 
 	@PostMapping("/{meetupId}/cancel")

@@ -26,9 +26,13 @@ public enum ErrorCode {
     DUPLICATE_EMAIL(HttpStatus.CONFLICT, "U002", "이미 사용 중인 이메일입니다."),
 
     // Friendship (친구, F-xxx)
-    FRIENDSHIP_NOT_FOUND(HttpStatus.NOT_FOUND, "F001", "친구 관계를 찾을 수 없습니다."),
-    ALREADY_FRIEND(HttpStatus.CONFLICT, "F002", "이미 친구 관계입니다."),
-    NOT_FRIENDS(HttpStatus.BAD_REQUEST, "F003", "친구 관계가 아닙니다."),
+    FRIEND_REQUEST_NOT_FOUND(HttpStatus.NOT_FOUND, "F001", "친구 요청을 찾을 수 없습니다."),
+    ALREADY_FRIEND_REQUESTED(HttpStatus.CONFLICT, "F002", "이미 친구 요청을 보냈습니다."),
+    SELF_FRIEND_REQUEST(HttpStatus.BAD_REQUEST, "F003", "자기 자신에게 친구 요청을 보낼 수 없습니다."),
+    FRIENDSHIP_NOT_FOUND(HttpStatus.NOT_FOUND, "F004", "친구 관계를 찾을 수 없습니다."),
+    ALREADY_FRIEND(HttpStatus.CONFLICT, "F005", "이미 친구 관계입니다."),
+    NOT_FRIENDS(HttpStatus.BAD_REQUEST, "F006", "친구 관계가 아닙니다."),
+    FRIEND_REQUEST_ALREADY_PROCESSED(HttpStatus.CONFLICT, "F007", "이미 처리된 친구 요청입니다."),
 
     // Location (장소, L-xxx)
     LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "L001", "장소를 찾을 수 없습니다."),
