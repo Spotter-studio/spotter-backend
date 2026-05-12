@@ -19,4 +19,11 @@ public class Category {
 
 	@Column(nullable = false, length = 50)
 	private String name;
+
+	public static Category of(Integer id, String name) {
+		Category category = new Category();
+		category.id = id;
+		category.name = name;
+		return category;
+	}
 }
