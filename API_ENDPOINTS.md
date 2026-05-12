@@ -47,6 +47,7 @@ Shared posts are intermediate records created when a user shares an SNS post bef
 
 | Method | Endpoint | Description |
 | --- | --- | --- |
+| `GET` | `/api/locations/{locationId}` | Get details for a single saved location. |
 | `GET` | `/api/locations/map?minLat={minLat}&maxLat={maxLat}&minLng={minLng}&maxLng={maxLng}` | Get locations within the current map bounding box. |
 
 ## Friendships
