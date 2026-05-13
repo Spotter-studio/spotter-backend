@@ -6,6 +6,8 @@ import com.spotter.backend.common.exception.ErrorCode;
 import com.spotter.backend.friendship.dto.FriendshipDTO;
 import com.spotter.backend.friendship.entity.Friendship;
 import com.spotter.backend.friendship.repository.FriendshipRepository;
+import com.spotter.backend.location.dto.LocationDTO;
+import com.spotter.backend.scrap.repository.ScrapRepository;
 import com.spotter.backend.user.entity.User;
 import com.spotter.backend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class FriendshipService {
 
 	private final FriendshipRepository friendshipRepository;
 	private final UserRepository userRepository;
+	private final ScrapRepository scrapRepository;
 
 	// 친구 요청 전송. 자기 자신·양방향 중복 요청 방지
 	@Transactional
@@ -85,6 +88,30 @@ public class FriendshipService {
 
 		friendship.reject();
 		return toResponse(friendship);
+	}
+
+	// 나와 친구 공통 장소 목록 반환
+	public List<LocationDTO.Response> getCommonLocations(Long userId, Long friendId) {
+		if (!friendshipRepository.existsBidirectional(userId, friendId, FriendshipStatus.ACCEPTED)) {
+			throw new BusinessException(ErrorCode.NOT_FRIENDS);
+		}
+
+		return scrapRepository.findCommonLocations(userId, friendId)
+			.stream()
+			.map(location -> new LocationDTO.Response(
+				location.getId(),
+				location.getLatitude(),
+				location.getLongitude(),
+				location.getCategory().getId(),
+				location.getCategory().getName(),
+				location.getNaverPlaceId(),
+				location.getName(),
+				location.getAddress(),
+				location.getTotalScrapCount(),
+				location.getCreatedAt(),
+				location.getUpdatedAt()
+			))
+			.toList();
 	}
 
 	// PENDING 상태인 요청만 수락/거절 가능
