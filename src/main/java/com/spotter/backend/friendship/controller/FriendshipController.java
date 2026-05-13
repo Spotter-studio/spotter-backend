@@ -3,6 +3,7 @@ package com.spotter.backend.friendship.controller;
 import com.spotter.backend.common.response.ApiResponse;
 import com.spotter.backend.friendship.dto.FriendshipDTO;
 import com.spotter.backend.friendship.service.FriendshipService;
+import com.spotter.backend.location.dto.LocationDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -70,5 +71,15 @@ public class FriendshipController {
 	) {
 		FriendshipDTO.Response response = friendshipService.rejectRequest(userId, requestId);
 		return ResponseEntity.ok(ApiResponse.onSuccess(response));
+	}
+
+	// 친구와 공통으로 스크랩한 장소 목록 조회
+	@GetMapping("/{friendId}/common-locations")
+	public ResponseEntity<ApiResponse<List<LocationDTO.Response>>> getCommonLocations(
+		@AuthenticationPrincipal Long userId,
+		@PathVariable Long friendId
+	) {
+		List<LocationDTO.Response> responses = friendshipService.getCommonLocations(userId, friendId);
+		return ResponseEntity.ok(ApiResponse.onSuccess(responses));
 	}
 }
